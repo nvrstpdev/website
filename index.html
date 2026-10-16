@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeverStop - Hypno Slideshow Maker</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+          font-family: 'Outfit', sans-serif;
+          background-color: #0f0323;
+          color: #ffffff;
+          overflow-x: hidden;
+          margin: 0;
+          padding: 0;
+      }
+
+      @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+      }
+
+      @keyframes gradient-shift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+      }
+
+      /* Hipnotyczne tło z promieniami i winietą */
+      .hypno-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          z-index: -1;
+          overflow: hidden;
+          pointer-events: none;
+          background: #0f0323;
+      }
+
+      .hypno-rays {
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: repeating-conic-gradient(
+              from 0deg,
+              #3b0764 0deg 10deg,
+              #1e0b36 10deg 20deg
+          );
+          animation: spin-slow 90s linear infinite;
+      }
+
+      .vignette-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(circle at center, rgba(216, 180, 254, 0.25) 0%, rgba(76, 29, 149, 0.15) 35%, rgba(15, 3, 35, 0.85) 80%, rgba(5, 1, 15, 0.98) 100%);
+          pointer-events: none;
+      }
+
+      /* Fancy font z delikatnie poruszającym się gradientem */
+      .brand-title {
+          font-family: 'Syne', sans-serif;
+          background: linear-gradient(135deg, #ffffff 0%, #f472b6 25%, #c084fc 50%, #9333ea 75%, #ffffff 100%);
+          background-size: 200% 200%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-shadow: 0 0 60px rgba(168, 85, 247, 0.45);
+          animation: gradient-shift 8s ease infinite;
+      }
+
+      /* Zwykły nagłówek bez gradientu */
+      .plain-title {
+          font-family: 'Syne', sans-serif;
+          color: #ffffff;
+      }
+
+      /* Style pigułek (badge) */
+      .badge-pill {
+          background: rgba(45, 15, 85, 0.85);
+          border: 1px solid rgba(168, 85, 247, 0.4);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Standardowe karty z efektem glassmorphism */
+      .glass-card {
+          background: rgba(22, 10, 42, 0.4);
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(168, 85, 247, 0.25);
+          transition: all 0.3s ease;
+          text-decoration: none;
+      }
+
+      .glass-card:hover {
+          border-color: rgba(168, 85, 247, 0.7);
+          transform: translateY(-4px);
+          box-shadow: 0 15px 35px -10px rgba(168, 85, 247, 0.35);
+      }
+
+      /* Wyróżnione karty zakupu (Patreon / Itch.io) */
+      .purchase-card {
+          background: linear-gradient(135deg, rgba(59, 7, 100, 0.5) 0%, rgba(22, 10, 42, 0.7) 100%);
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(244, 114, 182, 0.45);
+          transition: all 0.3s ease;
+          text-decoration: none;
+          box-shadow: 0 10px 30px -5px rgba(168, 85, 247, 0.3);
+      }
+
+      .purchase-card:hover {
+          border-color: rgba(244, 114, 182, 0.9);
+          transform: translateY(-4px);
+          box-shadow: 0 20px 40px -10px rgba(244, 114, 182, 0.5);
+      }
+
+      .view-section {
+          transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen flex-col items-center justify-between selection:bg-purple-600 selection:text-white">
+
+    <!-- Hipnotyczne tło -->
+    <div class="hypno-bg">
+      <div class="hypno-rays"></div>
+      <div class="vignette-overlay"></div>
+    </div>
+
+    <!-- WIDOK 1: Główna strona -->
+    <div id="view-1" class="flex min-h-screen w-full flex-col items-center justify-between px-4 py-8 sm:p-12">
+      <!-- GŁÓWNA ZAWARTOŚĆ -->
+      <main class="z-10 my-auto flex w-full max-w-4xl flex-col items-center gap-10 text-center sm:gap-16">
+        <!-- SEKCJA 1 -->
+        <section class="flex w-full flex-col items-center">
+          <!-- Informacje o platformach -->
+          <div class="mb-2 flex flex-col items-center gap-y-1">
+            <div class="badge-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5">
+              <svg class="h-3.5 w-3.5 text-purple-400" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.62L24 0v11.4h-13.051M0 12.75h9.75v9.45L0 20.85M10.949 12.75H24V24l-13.051-1.851z" /></svg>
+              <span class="text-[11px] font-semibold tracking-wider text-purple-200 uppercase">Available for Windows</span>
+            </div>
+            <span class="text-xs font-medium text-purple-300/80">linux, android, mac, ios coming soon!</span>
+          </div>
+
+          <!-- Napis NeverStop -->
+          <h1 class="brand-title mb-0 text-6xl leading-none font-extrabold tracking-tight sm:text-8xl md:text-[9.5rem]">NeverStop</h1>
+
+          <!-- Ikony social mediów -->
+          <div class="my-4 flex items-center gap-2">
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/neverstopdev/" target="_blank" rel="noopener noreferrer" class="rounded-full border border-purple-700/40 bg-purple-950/60 p-3 text-white shadow-xl transition hover:bg-purple-800/60">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
+            </a>
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@neverstopdev" target="_blank" rel="noopener noreferrer" class="rounded-full border border-purple-700/40 bg-purple-950/60 p-3 text-white shadow-xl transition hover:bg-purple-800/60">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" /></svg>
+            </a>
+            <!-- YouTube -->
+            <a href="https://www.youtube.com/@neverstopdevv" target="_blank" rel="noopener noreferrer" class="rounded-full border border-purple-700/40 bg-purple-950/60 p-3 text-white shadow-xl transition hover:bg-purple-800/60">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>
+            </a>
+          </div>
+
+          <!-- Opis -->
+          <p class="mb-4 max-w-2xl text-base leading-relaxed font-light text-purple-100 sm:text-xl">An immersive hypno slideshow making tool tailored to your needs!</p>
+
+          <!-- Disclaimer Early Access v0.2.2 -->
+          <div class="glass-card mb-8 rounded-xl px-5 py-3 max-w-xl text-xs sm:text-sm text-purple-200/90 border border-purple-500/30 text-center shadow-lg">
+            <span class="font-bold text-pink-300">Early Access v0.2.2:</span> This is an early stage of development. Bugs, rough edges or minor imperfections may occur. Try out the demo first!
+          </div>
+        </section>
+
+        <!-- SEKCJA 2 -->
+        <section class="flex w-full flex-col items-center">
+          <!-- Napis Free demo available on both platforms -->
+          <div class="mb-6 text-xs font-semibold tracking-wider text-purple-200 uppercase sm:text-sm">Free demo available on both platforms</div>
+
+          <!-- Przyciski / Kafelki zakupowe (Patreon i Itch.io) -->
+          <div class="grid w-full max-w-3xl grid-cols-1 gap-6 md:grid-cols-2">
+            <!-- Patreon Card -->
+            <a href="https://www.patreon.com/cw/NeverStopDev" target="_blank" rel="noopener noreferrer" class="purchase-card group flex cursor-pointer flex-col justify-between rounded-2xl p-6 text-left shadow-2xl">
+              <div>
+                <div class="mb-3 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="rounded-xl border border-purple-500/30 bg-purple-600/30 p-2.5 text-purple-300 transition group-hover:border-purple-400">
+                      <!-- Oficjalna czytelna ikona Patreon -->
+                      <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M15.386 0c-4.764 0-8.64 3.861-8.64 8.618 0 4.75 3.876 8.613 8.64 8.613 4.756 0 8.614-3.863 8.614-8.613C24 3.861 20.142 0 15.386 0zM0 24h4.158V0H0v24z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white transition group-hover:text-purple-200">Join on Patreon</h3>
+                  </div>
+                  <span class="rounded-full border border-purple-500/30 bg-purple-600/40 px-3 py-1 text-xs font-bold text-purple-200">$5 / mo</span>
+                </div>
+                <div class="mb-2 text-xs font-semibold text-purple-300">Support & grab current release</div>
+                <p class="text-sm leading-relaxed text-purple-200/90">Keep the downloaded release forever. Includes extra presets, direct developer contact, and voting on future updates.</p>
+              </div>
+            </a>
+
+            <!-- Itch.io Card -->
+            <a href="https://neverstopdev.itch.io/neverstop" target="_blank" rel="noopener noreferrer" class="purchase-card group flex cursor-pointer flex-col justify-between rounded-2xl p-6 text-left shadow-2xl">
+              <div>
+                <div class="mb-3 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="rounded-xl border border-purple-500/30 bg-purple-600/30 p-2.5 text-purple-300 transition group-hover:border-purple-400">
+                      <!-- Oficjalna poprawna ikona Itch.io (Simple Icons) -->
+                      <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3.129 1.338c-1.047.622-3.109 2.991-3.129 3.612v1.029c0 1.304 1.219 2.45 2.57 2.45h1.161c.421 0 .783.332.783.753v.783c0 .542-.482.964-1.024.964H1.61c-.886 0-1.61.723-1.61 1.61v.602c0 1.295 1.18 2.379 2.499 2.379h2.09c.422 0 .753.331.753.753v1.175c0 .542-.422.964-.964.964h-1.054c-.886 0-1.61.723-1.61 1.61v1.174c0 1.392 1.217 2.53 2.62 2.53h1.747c.422 0 .753.331.753.753v1.205c0 1.391 1.247 2.53 2.651 2.53h1.325c.422 0 .753-.331.753-.753v-1.175c0-.421.332-.753.753-.753h5.452c.422 0 .753.332.753.753v1.175c0 .422.331.753.753.753h1.325c1.404 0 2.651-1.139 2.651-2.53v-1.205c0-.422.331-.753.753-.753h1.747c1.403 0 2.62-1.138 2.62-2.53v-1.174c0-.887-.724-1.61-1.61-1.61h-1.054c-.542 0-.964-.422-.964-.964v-1.175c0-.422.331-.753.753-.753h2.09c1.319 0 2.499-1.084 2.499-2.379v-.602c0-.887-.724-1.61-1.61-1.61h-1.356c-.542 0-1.024-.422-1.024-.964v-.783c0-.421.362-.753.783-.753h1.161c1.352 0 2.57-1.146 2.57-2.45v-1.029c-.02-.621-2.082-2.99-3.129-3.612C20.574.652 17.587 0 12 0S3.426.652 3.129 1.338zM8.5 11.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+                      </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white transition group-hover:text-purple-200">Get on Itch.io</h3>
+                  </div>
+                  <span class="rounded-full border border-purple-500/30 bg-purple-600/40 px-3 py-1 text-xs font-bold text-purple-200">$25 once</span>
+                </div>
+                <div class="mb-2 text-xs font-semibold text-purple-300">Buy once & get lifetime updates</div>
+                <p class="text-sm leading-relaxed text-purple-200/90">Get the full version with lifetime access to all future updates. No recurring subscriptions.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <!-- SEKCJA 3 (STOPKA) -->
+      <footer id="footer-trigger" class="z-10 mt-auto flex w-full flex-col items-center gap-1 py-2 text-xs font-medium tracking-widest text-purple-300 uppercase cursor-pointer transition hover:text-white">
+        <span>Scroll down (or click) for details</span>
+        <svg class="mt-0.5 h-5 w-5 animate-bounce text-purple-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+      </footer>
+    </div>
+
+    <!-- WIDOK 2: Panel Informacyjny / How NeverStop works -->
+    <div id="view-2" class="view-section z-10 hidden min-h-screen w-full flex-col items-center justify-start text-center opacity-0 px-4 py-12 sm:py-16">
+      
+      <!-- Informacja o powrocie na samej górze -->
+      <div id="back-trigger" class="mb-8 flex flex-col items-center gap-1 cursor-pointer transition hover:opacity-80">
+  <svg class="h-5 w-5 animate-bounce text-purple-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+  </svg>
+  <span class="text-xs font-semibold tracking-widest text-purple-300 uppercase">
+    Scroll up (or click) to return to main page
+  </span>
+</div>
+
+      <!-- Główna zawartość widoku -->
+      <div class="w-full max-w-6xl flex flex-col items-center">
+        <!-- Nagłówek główny z gradientem TYLKO na NeverStop -->
+        <h2 class="plain-title mb-6 text-4xl font-extrabold sm:text-6xl tracking-tight">
+          How <span class="brand-title">NeverStop</span> works?
+        </h2>
+
+        <!-- Główny opis -->
+        <div class="glass-card mb-8 w-full rounded-2xl p-6 text-left shadow-2xl sm:p-8">
+          <p class="text-base leading-relaxed font-light text-purple-100 sm:text-lg">
+            NeverStop allows you to build custom sequences from <span class="brand-title font-bold">segments</span>, where each segment can be fully customized. A unique slideshow will then be generated using your own selected photos.
+          </p>
+        </div>
+
+        <!-- Nagłówek sekcji customizacji z gradientem TYLKO na segments -->
+        <h3 class="plain-title mb-6 text-2xl font-bold sm:text-3xl text-left w-full px-2">
+          What can be customized in each <span class="brand-title">segment</span>?
+        </h3>
+
+        <!-- Kafelki z opcjami customizacji w układzie 3 kolumn -->
+        <div class="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8 text-left">
+          
+          <!-- 1. Rhythm -->
+          <div class="glass-card rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <h4 class="text-lg font-bold text-white">Rhythm</h4>
+              </div>
+              <p class="text-sm text-purple-200/90 font-light leading-relaxed">
+                Slideshow and metronome speed. Features dynamic tempo changes across several types, such as linear growth, bumps, and edges.
+              </p>
+            </div>
+          </div>
+
+          <!-- 2. Image Source Selection -->
+          <div class="glass-card rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                </div>
+                <h4 class="text-lg font-bold text-white">Image Source</h4>
+              </div>
+              <p class="text-sm text-purple-200/90 font-light leading-relaxed mb-3">
+                Select local photo folders for your custom slideshow generation.
+              </p>
+              <div class="flex items-center gap-2 pt-2 border-t border-purple-500/20">
+                <span class="rounded bg-purple-900/60 border border-purple-700/50 px-1.5 py-0.5 text-[10px] font-semibold text-purple-200 uppercase tracking-wider whitespace-nowrap">Coming Soon</span>
+                <span class="text-xs text-purple-300/80 font-light">Automatic tag-based image fetching mode</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Visual Effects -->
+          <div class="glass-card rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                </div>
+                <h4 class="text-lg font-bold text-white">Visual Effects</h4>
+              </div>
+              <p class="text-sm text-purple-200/90 font-light leading-relaxed">
+                Visual effects such as <code class="text-pink-300 bg-purple-950/80 px-1.5 py-0.5 rounded">color shift</code>, <code class="text-pink-300 bg-purple-950/80 px-1.5 py-0.5 rounded">ripple</code>, and <code class="text-pink-300 bg-purple-950/80 px-1.5 py-0.5 rounded">pulse</code>.
+              </p>
+            </div>
+          </div>
+
+          <!-- 4. Fullscreen Effects -->
+          <div class="glass-card rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                </div>
+                <h4 class="text-lg font-bold text-white">Fullscreen Effects</h4>
+              </div>
+              <p class="text-sm text-purple-200/90 font-light leading-relaxed">
+                Fullscreen overlays including <code class="text-purple-300 bg-purple-950/80 px-1.5 py-0.5 rounded">vignette</code>, <code class="text-purple-300 bg-purple-950/80 px-1.5 py-0.5 rounded">spiral</code>, and <code class="text-purple-300 bg-purple-950/80 px-1.5 py-0.5 rounded">hypnotic rings</code>.
+              </p>
+            </div>
+          </div>
+
+          <!-- 5. Audio Generators -->
+          <div class="glass-card rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                </div>
+                <h4 class="text-lg font-bold text-white">Audio Generators</h4>
+              </div>
+              <p class="text-sm text-purple-200/90 font-light leading-relaxed">
+                Built-in generators for noise, binaural beats, and isochronic tones.
+              </p>
+            </div>
+          </div>
+
+          <!-- 6. Audio Player -->
+          <div class="glass-card rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h4 class="text-lg font-bold text-white">Audio Player</h4>
+              </div>
+              <p class="text-sm text-purple-200/90 font-light leading-relaxed">
+                Dedicated player allowing you to load and play custom MP3 files during your sessions.
+              </p>
+            </div>
+          </div>
+
+          <!-- 7. Captions -->
+          <div class="glass-card rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h4 class="text-lg font-bold text-white">Captions</h4>
+                  <span class="rounded bg-pink-600/40 border border-pink-500/50 px-1.5 py-0.5 text-[10px] font-bold text-pink-200">BETA</span>
+                </div>
+              </div>
+              <p class="text-sm text-purple-200/90 font-light leading-relaxed">
+                Support for triggering custom MP3 tracks synchronized with any chosen caption.
+              </p>
+            </div>
+          </div>
+
+          <!-- 8. Haptics -->
+          <div class="glass-card rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h4 class="text-lg font-bold text-white">Haptics</h4>
+                  <span class="rounded bg-purple-900/60 border border-purple-700/50 px-1.5 py-0.5 text-[10px] font-semibold text-purple-200 uppercase tracking-wider">Coming Soon</span>
+                </div>
+              </div>
+              <p class="text-sm text-purple-200/90 font-light leading-relaxed">
+                Vibration and haptic feedback support for immersive sessions.
+              </p>
+            </div>
+          </div>
+
+          <!-- 9. Duration -->
+          <div class="glass-card rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h4 class="text-lg font-bold text-white">Duration</h4>
+              </div>
+              <p class="text-sm text-purple-200/90 font-light leading-relaxed">
+                Precise configuration of time duration for each individual segment.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Przyszłość: Drzewko sesji z ikoną drzewa -->
+        <div class="glass-card mb-8 w-full rounded-2xl p-6 text-left shadow-2xl sm:p-8 border-purple-500/40">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="rounded-lg bg-purple-600/30 border border-purple-500/30 p-2 text-purple-300">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m0-18l-4 4m4-4l4 4M12 9l-6 6m6-6l6 6"/></svg>
+            </div>
+            <h4 class="text-lg font-bold text-white">Future Vision</h4>
+          </div>
+          <p class="text-sm leading-relaxed font-light text-purple-100">
+            In the future, linear session planning will be replaced by a branching tree system with randomized path selection. This will allow for creating dynamic, ever-changing sessions that never get repetitive.
+          </p>
+        </div>
+
+        <!-- Nagłówek Download free demo... w tym samym rozmiarze co About the author -->
+        <h3 class="plain-title mb-6 text-2xl font-bold sm:text-3xl text-center">
+          Download <span class="brand-title">free demo</span> or get a full version here!
+        </h3>
+
+        <!-- Przyciski z linkami (Patreon i Itch.io) - wyróżnione -->
+        <div class="grid w-full max-w-3xl grid-cols-1 gap-6 md:grid-cols-2 mb-12">
+          <!-- Patreon Card -->
+          <a href="https://www.patreon.com/cw/NeverStopDev" target="_blank" rel="noopener noreferrer" class="purchase-card group block flex cursor-pointer flex-col justify-between rounded-2xl p-6 text-left shadow-2xl">
+            <div>
+              <div class="mb-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="rounded-xl border border-purple-500/30 bg-purple-600/30 p-2.5 text-purple-300 transition group-hover:border-purple-400">
+                    <!-- Oficjalna czytelna ikona Patreon -->
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M15.386 0c-4.764 0-8.64 3.861-8.64 8.618 0 4.75 3.876 8.613 8.64 8.613 4.756 0 8.614-3.863 8.614-8.613C24 3.861 20.142 0 15.386 0zM0 24h4.158V0H0v24z"/></svg>
+                  </div>
+                  <h3 class="text-lg font-bold text-white transition group-hover:text-purple-200">Join on Patreon</h3>
+                </div>
+                <span class="rounded-full border border-purple-500/30 bg-purple-600/40 px-3 py-1 text-xs font-bold text-purple-200">$5 / mo</span>
+              </div>
+              <div class="mb-2 text-xs font-semibold text-purple-300">Support & grab current release</div>
+              <p class="text-sm leading-relaxed text-purple-200/90">Keep the downloaded release forever. Includes extra presets, direct developer contact, and voting on future updates.</p>
+            </div>
+          </a>
+
+          <!-- Itch.io Card -->
+          <a href="https://neverstopdev.itch.io/neverstop" target="_blank" rel="noopener noreferrer" class="purchase-card group block flex cursor-pointer flex-col justify-between rounded-2xl p-6 text-left shadow-2xl">
+            <div>
+              <div class="mb-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="rounded-xl border border-purple-500/30 bg-purple-600/30 p-2.5 text-purple-300 transition group-hover:border-purple-400">
+                    <!-- Oficjalna poprawna ikona Itch.io (Simple Icons) -->
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M3.129 1.338c-1.047.622-3.109 2.991-3.129 3.612v1.029c0 1.304 1.219 2.45 2.57 2.45h1.161c.421 0 .783.332.783.753v.783c0 .542-.482.964-1.024.964H1.61c-.886 0-1.61.723-1.61 1.61v.602c0 1.295 1.18 2.379 2.499 2.379h2.09c.422 0 .753.331.753.753v1.175c0 .542-.422.964-.964.964h-1.054c-.886 0-1.61.723-1.61 1.61v1.174c0 1.392 1.217 2.53 2.62 2.53h1.747c.422 0 .753.331.753.753v1.205c0 1.391 1.247 2.53 2.651 2.53h1.325c.422 0 .753-.331.753-.753v-1.175c0-.421.332-.753.753-.753h5.452c.422 0 .753.332.753.753v1.175c0 .422.331.753.753.753h1.325c1.404 0 2.651-1.139 2.651-2.53v-1.205c0-.422.331-.753.753-.753h1.747c1.403 0 2.62-1.138 2.62-2.53v-1.174c0-.887-.724-1.61-1.61-1.61h-1.054c-.542 0-.964-.422-.964-.964v-1.175c0-.422.331-.753.753-.753h2.09c1.319 0 2.499-1.084 2.499-2.379v-.602c0-.887-.724-1.61-1.61-1.61h-1.356c-.542 0-1.024-.422-1.024-.964v-.783c0-.421.362-.753.783-.753h1.161c1.352 0 2.57-1.146 2.57-2.45v-1.029c-.02-.621-2.082-2.99-3.129-3.612C20.574.652 17.587 0 12 0S3.426.652 3.129 1.338zM8.5 11.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+                    </svg>
+                  </div>
+                  <h3 class="text-lg font-bold text-white transition group-hover:text-purple-200">Get on Itch.io</h3>
+                </div>
+                <span class="rounded-full border border-purple-500/30 bg-purple-600/40 px-3 py-1 text-xs font-bold text-purple-200">$25 once</span>
+              </div>
+              <div class="mb-2 text-xs font-semibold text-purple-300">Buy once & get lifetime updates</div>
+              <p class="text-sm leading-relaxed text-purple-200/90">Get the full version with lifetime access to all future updates. No recurring subscriptions.</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Sekcja About the author -->
+        <div class="w-full max-w-3xl flex flex-col items-center mb-8">
+          <h3 class="plain-title mb-4 text-2xl font-bold sm:text-3xl text-center">
+            About the <span class="brand-title">author</span>
+          </h3>
+          <div class="glass-card w-full rounded-2xl p-6 text-left shadow-2xl sm:p-8">
+            <p class="text-sm leading-relaxed font-light text-purple-100 sm:text-base mb-3">
+              This is my first fully-fledged software project, developed completely on my own from scratch. Juggling every aspect of creation-from initial architecture and rendering logic to interface design-has been both a massive challenge and an incredible learning experience.
+            </p>
+            <p class="text-sm leading-relaxed font-light text-purple-100 sm:text-base">
+              Every detail is meticulously crafted to ensure the smoothest and most immersive hypnotic sessions possible. Thank you for checking out my work and supporting independent development!
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Płótno na samym wierzchu tuż przed skryptem -->
+    <canvas id="spiral" style="position:fixed;inset:0;width:100%;height:100%;z-index:9999;pointer-events:none"></canvas>
+
+    <script>
+  const view1 = document.getElementById('view-1');
+  const view2 = document.getElementById('view-2');
+  const canvas = document.getElementById('spiral');
+  const ctx = canvas.getContext('2d');
+
+  // --- ustawienia ---
+  const ARMS = 5;                // liczba ramion spirali
+  const MAX_TWIST = 4;           // maks. skręcenie w radianach (zakrzywienie)
+  const THRESH = 1000;           // ile "scrolla" do punktu krytycznego
+  const SPIN_MS = 2000;          // czas obrotu + odsłonięcia
+  const SPIN_TURNS = 0.8;        // ile obrotów w fazie spin
+  const SWAP_AT = 0.6;           // moment podmiany widoków (0..1 fazy spin)
+
+  let acc = 0, shown = 0, lastInput = 0;
+  let phase = 'idle';            // idle | spin | done | reverse-spin
+  let rot = 0, rot0 = 0, spinStart = 0, swapped = false;
+
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const smooth = t => t * t * (3 - 2 * t);
+  const easeInOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  function resize() {
+    const d = window.devicePixelRatio || 1;
+    canvas.width = innerWidth * d;
+    canvas.height = innerHeight * d;
+    ctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  function drawSpiral(twist, alpha, rotation) {
+    const w = innerWidth, h = innerHeight;
+    ctx.clearRect(0, 0, w, h);
+    if (alpha <= 0.002) return;
+
+    const cx = w / 2, cy = h / 2;
+    const R = Math.hypot(cx, cy) * 1.05;
+    const STEPS = 70;
+    const wedge = (Math.PI / ARMS) * 1.15;
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = '#12042a';
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.translate(cx, cy);
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, R);
+    g.addColorStop(0, '#f5d0fe');
+    g.addColorStop(0.3, '#c084fc');
+    g.addColorStop(0.65, '#7e22ce');
+    g.addColorStop(1, '#3b0764');
+    ctx.fillStyle = g;
+
+    for (let i = 0; i < ARMS; i++) {
+      const base = rotation + (i * 2 * Math.PI) / ARMS;
+      ctx.beginPath();
+      for (let s = 0; s <= STEPS; s++) {
+        const k = s / STEPS, r = R * k;
+        const a = base + twist * Math.pow(k, 0.8);
+        ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+      }
+      for (let s = STEPS; s >= 0; s--) {
+        const k = s / STEPS, r = R * k;
+        const a = base + wedge + twist * Math.pow(k, 0.8);
+        ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function showView2() {
+    view1.classList.add('hidden');
+    view2.classList.remove('hidden');
+    view2.style.display = 'flex';
+    view2.style.transition = 'none';
+    view2.style.opacity = '1';
+    view2.style.transform = 'scale(1.12)';
+    requestAnimationFrame(() => {
+      view2.style.transition = 'transform 1.4s cubic-bezier(.2,.8,.2,1)';
+      view2.style.transform = 'scale(1)';
+    });
+  }
+
+  function triggerTransitionToView2() {
+    if (phase !== 'idle') return;
+    phase = 'spin';
+    spinStart = performance.now();
+    rot0 = rot;
+    acc = THRESH;
+    shown = 1;
+  }
+
+  function triggerReverseTransition() {
+    if (phase !== 'done') return;
+    phase = 'reverse-spin';
+    spinStart = performance.now();
+    rot0 = rot;
+    swapped = false;
+  }
+
+  function frame(now) {
+    if (phase === 'idle') {
+      if (now - lastInput > 350) acc = Math.max(0, acc - 8);
+      shown += (acc / THRESH - shown) * 0.12;
+      rot += 0.003 + shown * 0.02;
+
+      const alpha = smooth(clamp(shown / 0.85, 0, 1));
+      drawSpiral(MAX_TWIST * smooth(shown), alpha, rot);
+
+      if (acc >= THRESH && shown > 0.985) {
+        phase = 'spin';
+        spinStart = now;
+        rot0 = rot;
+      }
+    } else if (phase === 'spin') {
+      const t = clamp((now - spinStart) / SPIN_MS, 0, 1);
+      rot = rot0 + easeInOut(t) * Math.PI * 2 * SPIN_TURNS;
+
+      if (t >= SWAP_AT && !swapped) { swapped = true; showView2(); }
+
+      let twist = MAX_TWIST, alpha = 1;
+      if (t > SWAP_AT) {
+        const u = smooth((t - SWAP_AT) / (1 - SWAP_AT));
+        twist = MAX_TWIST * (1 - u);
+        alpha = 1 - u;
+      } else {
+        twist = MAX_TWIST * (1 + 0.25 * Math.sin((t / SWAP_AT) * Math.PI));
+      }
+      drawSpiral(twist, alpha, rot);
+
+      if (t >= 1) { 
+        phase = 'done'; 
+        acc = 0; 
+        shown = 0; 
+        ctx.clearRect(0, 0, innerWidth, innerHeight); 
+      }
+    } else if (phase === 'done') {
+      // W fazie 'done' użytkownik jest w widoku 2
+      // Sprawdzamy czy próbuje scrollować w górę (lub jest na samej górze i wykonał ruch)
+    } else if (phase === 'reverse-spin') {
+      const t = clamp((now - spinStart) / SPIN_MS, 0, 1);
+      rot = rot0 - easeInOut(t) * Math.PI * 2 * SPIN_TURNS;
+
+      if (t >= SWAP_AT && !swapped) {
+        swapped = true;
+        view2.style.transition = 'opacity 0.5s ease';
+        view2.style.opacity = '0';
+        setTimeout(() => {
+          view2.style.display = 'none';
+          view2.classList.add('hidden');
+          view1.classList.remove('hidden');
+          window.scrollTo(0, 0);
+        }, 250);
+      }
+
+      let twist = 0, alpha = 1;
+      if (t <= SWAP_AT) {
+        const u = smooth(t / SWAP_AT);
+        twist = -MAX_TWIST * u;
+        alpha = u;
+      } else {
+        const u = smooth((t - SWAP_AT) / (1 - SWAP_AT));
+        twist = -MAX_TWIST * (1 - u);
+        alpha = 1 - u;
+      }
+      drawSpiral(twist, alpha, rot);
+
+      if (t >= 1) {
+        phase = 'idle';
+        acc = 0;
+        shown = 0;
+        swapped = false;
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Obsługa scrolla w widoku 1 (przejście do widoku 2)
+  addEventListener('wheel', e => {
+    if (phase === 'spin' || phase === 'reverse-spin') return;
+    
+    if (phase === 'idle' && e.deltaY > 0) {
+      acc = clamp(acc + e.deltaY, 0, THRESH);
+      lastInput = performance.now();
+    } else if (phase === 'done') {
+      // Jeśli jesteśmy w widoku 2 i użytkownik scrolluje w górę będąc na górze strony
+      if (window.scrollY <= 5 && e.deltaY < 0) {
+        triggerReverseTransition();
+      }
+    }
+  }, { passive: true });
+
+  // Obsługa dotyku dla widoku 1
+  let touchY = 0;
+  addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+  addEventListener('touchmove', e => {
+    if (phase === 'spin' || phase === 'reverse-spin') return;
+    const y = e.touches[0].clientY;
+    const delta = touchY - y;
+    
+    if (phase === 'idle' && delta > 0) {
+      acc = clamp(acc + delta * 2, 0, THRESH);
+      lastInput = performance.now();
+    } else if (phase === 'done' && window.scrollY <= 5 && delta < 0) {
+      triggerReverseTransition();
+    }
+    touchY = y;
+  }, { passive: true });
+
+  // Kliknięcie w stopkę (Widok 1) - natychmiastowe przejście
+  document.getElementById('footer-trigger').addEventListener('click', () => {
+    triggerTransitionToView2();
+  });
+
+  // Kliknięcie w nagłówek (Widok 2) - natychmiastowy powrót
+  document.getElementById('back-trigger').addEventListener('click', () => {
+    triggerReverseTransition();
+  });
+</script>
+  </body>
+</html>
