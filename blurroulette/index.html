@@ -1,0 +1,2479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Reveal Challenge - NeverStop Theme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f0323;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        body::selection {
+            background-color: #9333ea;
+            color: #ffffff;
+        }
+
+        .hypno-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            background: #0f0323;
+        }
+
+        .hypno-rays {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-conic-gradient(
+                from 0deg,
+                #3b0764 0deg 10deg,
+                #1e0b36 10deg 20deg
+            );
+            animation: spin-slow 90s linear infinite;
+        }
+
+        .vignette-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                circle at center,
+                rgba(216, 180, 254, 0.22) 0%,
+                rgba(76, 29, 149, 0.16) 35%,
+                rgba(15, 3, 35, 0.85) 80%,
+                rgba(5, 1, 15, 0.98) 100%
+            );
+            pointer-events: none;
+        }
+
+        .brand-title {
+            font-family: 'Syne', sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f472b6 25%, #c084fc 50%, #9333ea 75%, #ffffff 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(168, 85, 247, 0.45);
+            animation: gradient-shift 8s ease infinite;
+        }
+
+        .glass-panel {
+            background: rgba(22, 10, 42, 0.56);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(168, 85, 247, 0.32);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        #top-left-site-btn {
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 60;
+            background: rgba(22, 10, 42, 0.72);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #f3e8ff;
+            border: 1px solid rgba(192, 132, 252, 0.45);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+        }
+
+        #top-left-site-btn:hover {
+            transform: translateY(-1px);
+            border-color: #f472b6;
+            background: rgba(59, 7, 100, 0.85);
+        }
+
+        #top-left-links {
+            position: fixed;
+            top: 56px;
+            left: 14px;
+            z-index: 60;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .top-left-link-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: rgba(22, 10, 42, 0.72);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #f3e8ff;
+            border: 1px solid rgba(192, 132, 252, 0.45);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+        }
+
+        .top-left-link-btn:hover {
+            transform: translateY(-1px);
+            border-color: #f472b6;
+            background: rgba(59, 7, 100, 0.85);
+        }
+
+        #menu-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 14px;
+            width: 97%;
+            max-width: 1420px;
+            flex-wrap: wrap;
+            padding-top: 28px;
+        }
+
+        .side-panel {
+            padding: 16px 18px;
+            border-radius: 16px;
+            text-align: left;
+            max-height: 88vh;
+            overflow-y: auto;
+        }
+
+        #grid-side-panel {
+            width: 250px;
+            flex: 0 0 250px;
+        }
+
+        #effects-side-panel {
+            width: 520px;
+            flex: 1 1 460px;
+            max-width: 560px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .side-panel h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            color: #e9d5ff;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0;
+        }
+
+        .btn-mini {
+            background: rgba(88, 28, 135, 0.65);
+            color: #f9a8d4;
+            border: 1px solid rgba(244, 114, 182, 0.45);
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+        }
+
+        .btn-mini:hover {
+            background: rgba(147, 51, 234, 0.8);
+            border-color: #f472b6;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .effects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        @media (max-width: 640px) {
+            .effects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .effect-card {
+            background: rgba(38, 15, 74, 0.48);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(192, 132, 252, 0.25);
+            border-radius: 12px;
+            padding: 10px 11px;
+            transition: border-color 0.25s ease;
+        }
+
+        .effect-card:hover {
+            border-color: rgba(244, 114, 182, 0.55);
+        }
+
+        .effect-settings {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(192, 132, 252, 0.2);
+            display: block;
+        }
+
+        .sub-row {
+            margin-bottom: 6px;
+        }
+
+        .sub-row:last-child {
+            margin-bottom: 0;
+        }
+
+        #menu {
+            padding: 20px 24px;
+            border-radius: 16px;
+            text-align: left;
+            max-width: 410px;
+            width: 100%;
+            flex: 0 1 390px;
+            max-height: 88vh;
+            overflow-y: auto;
+        }
+
+        #menu h1 {
+            margin-bottom: 14px;
+            font-size: 24px;
+            line-height: 1.15;
+            text-align: center;
+        }
+
+        .save-box {
+            margin-top: 14px;
+            padding: 11px 12px;
+            border-radius: 12px;
+            background: rgba(38, 15, 74, 0.48);
+            border: 1px solid rgba(192, 132, 252, 0.28);
+        }
+
+        .save-box-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #e9d5ff;
+            margin-bottom: 6px;
+        }
+
+        #preset-code-input {
+            width: 100%;
+            min-height: 62px;
+            max-height: 110px;
+            resize: vertical;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(192, 132, 252, 0.35);
+            background: rgba(15, 3, 35, 0.78);
+            color: #f5d0fe;
+            font-family: Consolas, Monaco, 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.35;
+            outline: none;
+        }
+
+        #preset-code-input:focus {
+            border-color: #f472b6;
+        }
+
+        .save-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .btn-small {
+            flex: 1;
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid rgba(192, 132, 252, 0.45);
+            background: rgba(59, 7, 100, 0.75);
+            color: #ffffff;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+        }
+
+        .btn-small:hover {
+            background: rgba(147, 51, 234, 0.85);
+            border-color: #f472b6;
+            transform: translateY(-1px);
+        }
+
+        #save-feedback {
+            margin-top: 6px;
+            font-size: 11.5px;
+            color: #f9a8d4;
+            min-height: 16px;
+        }
+
+        .privacy-disclaimer {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(59, 7, 100, 0.42);
+            border: 1px solid rgba(244, 114, 182, 0.35);
+            color: #f3e8ff;
+            font-size: 12px;
+            line-height: 1.42;
+        }
+
+        .privacy-disclaimer strong {
+            display: block;
+            color: #f472b6;
+            margin-bottom: 2px;
+            font-size: 12.5px;
+        }
+
+        .control-group {
+            margin-bottom: 10px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #e9d5ff;
+            margin-bottom: 3px;
+        }
+
+        .control-label span {
+            color: #f9a8d4;
+            font-weight: 600;
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            gap: 6px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 21px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: rgba(88, 28, 135, 0.65);
+            border: 1px solid rgba(192, 132, 252, 0.35);
+            transition: 0.2s;
+            border-radius: 22px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            left: 2px;
+            bottom: 2px;
+            background-color: #ffffff;
+            transition: 0.2s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: linear-gradient(135deg, #9333ea, #ec4899);
+            border-color: rgba(244, 114, 182, 0.7);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(19px);
+        }
+
+        select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(192, 132, 252, 0.35);
+            background-color: rgba(30, 11, 54, 0.85);
+            color: #ffffff;
+            font-size: 13px;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: #f472b6;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: #d946ef;
+            cursor: pointer;
+        }
+
+        .actions-row {
+            margin-top: 14px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #9333ea 0%, #db2777 100%);
+            color: #ffffff;
+            padding: 10px 14px;
+            border: 1px solid rgba(244, 114, 182, 0.5);
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+            flex: 1;
+            box-shadow: 0 8px 24px rgba(147, 51, 234, 0.35);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+            box-shadow: 0 12px 28px rgba(219, 39, 119, 0.45);
+        }
+
+        .btn-secondary {
+            background: rgba(59, 7, 100, 0.65);
+            color: #f3e8ff;
+            border: 1px solid rgba(192, 132, 252, 0.45);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(88, 28, 135, 0.8);
+            box-shadow: 0 10px 24px rgba(168, 85, 247, 0.35);
+        }
+
+        #start-btn {
+            display: none;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        #status {
+            font-size: 12px;
+            color: #d8b4fe;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        #game-container {
+            display: none;
+            position: relative;
+            background-color: #090214;
+            border: 1px solid rgba(192, 132, 252, 0.4);
+            border-radius: 14px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
+            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #game-container.active-view {
+            display: flex;
+        }
+
+        #game-container.grid-mode,
+        #game-container:fullscreen,
+        #game-container:-webkit-full-screen {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            background-color: #090214;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #menu-back-btn {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(22, 10, 42, 0.78);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(192, 132, 252, 0.45);
+            padding: 7px 14px;
+            border-radius: 18px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 50;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        #menu-back-btn:hover {
+            background: rgba(88, 28, 135, 0.9);
+            border-color: #f472b6;
+        }
+
+        #timer {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(22, 10, 42, 0.78);
+            backdrop-filter: blur(10px);
+            padding: 7px 14px;
+            border-radius: 18px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #f3e8ff;
+            display: none;
+            border: 1px solid rgba(192, 132, 252, 0.45);
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        #fullscreen-hint {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 28px rgba(244, 114, 182, 0.8), 0 4px 16px rgba(0, 0, 0, 0.95);
+            background: rgba(22, 10, 42, 0.85);
+            backdrop-filter: blur(14px);
+            padding: 20px 40px;
+            border-radius: 22px;
+            border: 1px solid rgba(244, 114, 182, 0.65);
+            z-index: 9999;
+            pointer-events: none;
+            display: none;
+            white-space: nowrap;
+            box-shadow: 0 0 45px rgba(147, 51, 234, 0.55);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hypno-bg">
+        <div class="hypno-rays"></div>
+        <div class="vignette-overlay"></div>
+    </div>
+
+    <button id="top-left-site-btn" type="button">Back to main website</button>
+    <div id="top-left-links">
+        <a class="top-left-link-btn" href="https://www.patreon.com/cw/NeverStopDev" target="_blank" rel="noopener noreferrer">Support on Patreon</a>
+        <a class="top-left-link-btn" href="https://neverstopdev.itch.io/" target="_blank" rel="noopener noreferrer">See other projects on itch.io</a>
+    </div>
+
+    <div id="menu-wrapper">
+        <aside class="side-panel glass-panel" id="grid-side-panel">
+            <div class="panel-header">
+                <h2>Grid Settings</h2>
+            </div>
+            <div class="effect-card">
+                <div class="toggle-row">
+                    <label for="infinite-grid-toggle">Infinite Grid</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="infinite-grid-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="effect-settings" id="grid-rows-group" style="display: none;">
+                    <div class="sub-row">
+                        <div class="control-label">
+                            <label for="grid-rows-slider">Grid Rows</label>
+                            <span id="grid-rows-val">3</span>
+                        </div>
+                        <input type="range" id="grid-rows-slider" min="1" max="8" step="1" value="3">
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div id="menu" class="glass-panel">
+            <h1 class="brand-title">Blur roulette v1.0</h1>
+
+            <div class="control-group">
+                <div class="control-label">
+                    <label for="mode-select">Game Mode</label>
+                </div>
+                <select id="mode-select">
+                    <option value="qwer">1. Q W E R Reveal</option>
+                    <option value="flashlight">2. Flashlight Mode</option>
+                    <option value="random">3. Random Blurred Spot</option>
+                </select>
+            </div>
+
+            <div class="control-group" id="spot-size-group">
+                <div class="control-label">
+                    <label for="spot-size-slider">Spot Size</label>
+                    <span id="spot-size-val">8%</span>
+                </div>
+                <input type="range" id="spot-size-slider" min="3" max="25" step="1" value="8">
+            </div>
+
+            <div class="control-group" id="flashlight-size-group">
+                <div class="control-label">
+                    <label for="flashlight-size-slider">Flashlight Size</label>
+                    <span id="flashlight-size-val">90px</span>
+                </div>
+                <input type="range" id="flashlight-size-slider" min="30" max="240" step="5" value="90">
+            </div>
+
+            <div class="control-group" id="change-time-group">
+                <div class="control-label">
+                    <label for="change-time-slider">Change Time</label>
+                    <span id="change-time-val">10s</span>
+                </div>
+                <input type="range" id="change-time-slider" min="1" max="20" step="1" value="10">
+            </div>
+
+            <div class="control-group" id="blur-level-group">
+                <div class="control-label">
+                    <label for="blur-level-slider">Blur Level</label>
+                    <span id="blur-level-val">20px</span>
+                </div>
+                <input type="range" id="blur-level-slider" min="4" max="50" step="2" value="20">
+            </div>
+
+            <div class="actions-row">
+                <button class="btn" id="start-btn">Start</button>
+                <button class="btn btn-secondary" id="select-folder-btn">Select Folder</button>
+            </div>
+            <input type="file" id="folder-input" webkitdirectory directory multiple accept="image/*">
+            <div id="status">Please select a folder containing images.</div>
+
+            <div class="save-box">
+                <div class="save-box-title">Save / Preset Code</div>
+                <textarea id="preset-code-input" placeholder="Click Export to generate full settings code, or paste code and click Import..."></textarea>
+                <div class="save-actions">
+                    <button class="btn-small" id="export-settings-btn" type="button">Export</button>
+                    <button class="btn-small" id="import-settings-btn" type="button">Import</button>
+                </div>
+                <div id="save-feedback"></div>
+            </div>
+
+            <div class="privacy-disclaimer">
+                <strong>Local Privacy Notice</strong>
+                Your images are processed 100% locally inside your browser. Nothing is uploaded, stored, or shared with any server or third party.
+            </div>
+        </div>
+
+        <aside class="side-panel glass-panel" id="effects-side-panel">
+            <div class="panel-header">
+                <h2>Effect Settings</h2>
+                <button class="btn-mini" id="disable-all-effects-btn" type="button">Disable All</button>
+            </div>
+
+            <div class="effects-grid">
+                <div class="effect-card">
+                    <div class="toggle-row">
+                        <label for="metronome-toggle">Metronome</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="metronome-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="effect-settings" id="metronome-settings">
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="metronome-freq-slider">Frequency</label>
+                                <span id="metronome-freq-val">2.0 Hz</span>
+                            </div>
+                            <input type="range" id="metronome-freq-slider" min="1" max="5" step="0.1" value="2">
+                        </div>
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="metronome-pitch-slider">Pitch</label>
+                                <span id="metronome-pitch-val">90 Hz</span>
+                            </div>
+                            <input type="range" id="metronome-pitch-slider" min="50" max="220" step="5" value="90">
+                        </div>
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="metronome-volume-slider">Volume</label>
+                                <span id="metronome-volume-val">35%</span>
+                            </div>
+                            <input type="range" id="metronome-volume-slider" min="5" max="100" step="5" value="35">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="effect-card">
+                    <div class="toggle-row">
+                        <label for="spot-hdr-toggle">Spot HDR</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="spot-hdr-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="effect-settings" id="spot-hdr-settings">
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="spot-hdr-intensity-slider">Intensity</label>
+                                <span id="spot-hdr-intensity-val">60%</span>
+                            </div>
+                            <input type="range" id="spot-hdr-intensity-slider" min="10" max="100" step="5" value="60">
+                        </div>
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="spot-hdr-vibrance-slider">Vibrance</label>
+                                <span id="spot-hdr-vibrance-val">50%</span>
+                            </div>
+                            <input type="range" id="spot-hdr-vibrance-slider" min="0" max="100" step="5" value="50">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="effect-card">
+                    <div class="toggle-row">
+                        <label for="chromatic-toggle">Chromatic Burst</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="chromatic-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="effect-settings" id="chromatic-settings">
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="chromatic-intensity-slider">Shift</label>
+                                <span id="chromatic-intensity-val">60%</span>
+                            </div>
+                            <input type="range" id="chromatic-intensity-slider" min="10" max="100" step="5" value="60">
+                        </div>
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="chromatic-duration-slider">Duration</label>
+                                <span id="chromatic-duration-val">0.9s</span>
+                            </div>
+                            <input type="range" id="chromatic-duration-slider" min="0.3" max="2.5" step="0.1" value="0.9">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="effect-card">
+                    <div class="toggle-row">
+                        <label for="spot-pulse-toggle">Spot Pulse</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="spot-pulse-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="effect-settings" id="spot-pulse-settings">
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="spot-pulse-amount-slider">Amount</label>
+                                <span id="spot-pulse-amount-val">8%</span>
+                            </div>
+                            <input type="range" id="spot-pulse-amount-slider" min="2" max="20" step="1" value="8">
+                        </div>
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="spot-pulse-speed-slider">Speed</label>
+                                <span id="spot-pulse-speed-val">1.2x</span>
+                            </div>
+                            <input type="range" id="spot-pulse-speed-slider" min="0.5" max="3" step="0.1" value="1.2">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="effect-card">
+                    <div class="toggle-row">
+                        <label for="screen-shake-toggle">Screen Shake</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="screen-shake-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="effect-settings" id="screen-shake-settings">
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="screen-shake-intensity-slider">Intensity</label>
+                                <span id="screen-shake-intensity-val">50%</span>
+                            </div>
+                            <input type="range" id="screen-shake-intensity-slider" min="10" max="100" step="5" value="50">
+                        </div>
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="screen-shake-duration-slider">Duration</label>
+                                <span id="screen-shake-duration-val">0.4s</span>
+                            </div>
+                            <input type="range" id="screen-shake-duration-slider" min="0.2" max="1.2" step="0.1" value="0.4">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="effect-card">
+                    <div class="toggle-row">
+                        <label for="gold-glow-toggle">Gold Edge Glow</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="gold-glow-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="effect-settings" id="gold-glow-settings">
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="gold-glow-size-slider">Glow Size</label>
+                                <span id="gold-glow-size-val">16px</span>
+                            </div>
+                            <input type="range" id="gold-glow-size-slider" min="4" max="40" step="2" value="16">
+                        </div>
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="gold-glow-opacity-slider">Opacity</label>
+                                <span id="gold-glow-opacity-val">65%</span>
+                            </div>
+                            <input type="range" id="gold-glow-opacity-slider" min="15" max="100" step="5" value="65">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="effect-card">
+                    <div class="toggle-row">
+                        <label for="confetti-toggle">Confetti Burst</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="confetti-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="effect-settings" id="confetti-settings">
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="confetti-count-slider">Particles</label>
+                                <span id="confetti-count-val">40</span>
+                            </div>
+                            <input type="range" id="confetti-count-slider" min="10" max="120" step="5" value="40">
+                        </div>
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="confetti-spread-slider">Spread</label>
+                                <span id="confetti-spread-val">7px</span>
+                            </div>
+                            <input type="range" id="confetti-spread-slider" min="2" max="16" step="1" value="7">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="effect-card">
+                    <div class="toggle-row">
+                        <label for="victory-chime-toggle">Victory Chime</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="victory-chime-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="effect-settings" id="victory-chime-settings">
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="victory-chime-volume-slider">Volume</label>
+                                <span id="victory-chime-volume-val">30%</span>
+                            </div>
+                            <input type="range" id="victory-chime-volume-slider" min="5" max="100" step="5" value="30">
+                        </div>
+                        <div class="sub-row">
+                            <div class="control-label">
+                                <label for="victory-chime-pitch-slider">Root Pitch</label>
+                                <span id="victory-chime-pitch-val">520 Hz</span>
+                            </div>
+                            <input type="range" id="victory-chime-pitch-slider" min="260" max="880" step="10" value="520">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <div id="game-container">
+        <button id="menu-back-btn" type="button">Menu</button>
+        <canvas id="canvas"></canvas>
+        <div id="timer"><span id="time-left">10</span>s</div>
+    </div>
+
+    <div id="fullscreen-hint">F to fullscreen</div>
+
+    <script>
+        const topLeftSiteBtn = document.getElementById('top-left-site-btn');
+        const topLeftLinks = document.getElementById('top-left-links');
+        const menuWrapper = document.getElementById('menu-wrapper');
+        const gameContainer = document.getElementById('game-container');
+        const statusText = document.getElementById('status');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const menuBackBtn = document.getElementById('menu-back-btn');
+        const timerElement = document.getElementById('timer');
+        const timeLeftElement = document.getElementById('time-left');
+        const fullscreenHint = document.getElementById('fullscreen-hint');
+
+        const presetCodeInput = document.getElementById('preset-code-input');
+        const exportSettingsBtn = document.getElementById('export-settings-btn');
+        const importSettingsBtn = document.getElementById('import-settings-btn');
+        const saveFeedback = document.getElementById('save-feedback');
+        const disableAllEffectsBtn = document.getElementById('disable-all-effects-btn');
+
+        const modeSelect = document.getElementById('mode-select');
+        const infiniteGridToggle = document.getElementById('infinite-grid-toggle');
+        const gridRowsSlider = document.getElementById('grid-rows-slider');
+        const spotSizeSlider = document.getElementById('spot-size-slider');
+        const flashlightSizeSlider = document.getElementById('flashlight-size-slider');
+        const changeTimeSlider = document.getElementById('change-time-slider');
+        const blurLevelSlider = document.getElementById('blur-level-slider');
+
+        const metronomeToggle = document.getElementById('metronome-toggle');
+        const metronomeFreqSlider = document.getElementById('metronome-freq-slider');
+        const metronomePitchSlider = document.getElementById('metronome-pitch-slider');
+        const metronomeVolumeSlider = document.getElementById('metronome-volume-slider');
+
+        const spotHdrToggle = document.getElementById('spot-hdr-toggle');
+        const spotHdrIntensitySlider = document.getElementById('spot-hdr-intensity-slider');
+        const spotHdrVibranceSlider = document.getElementById('spot-hdr-vibrance-slider');
+
+        const chromaticToggle = document.getElementById('chromatic-toggle');
+        const chromaticIntensitySlider = document.getElementById('chromatic-intensity-slider');
+        const chromaticDurationSlider = document.getElementById('chromatic-duration-slider');
+
+        const spotPulseToggle = document.getElementById('spot-pulse-toggle');
+        const spotPulseAmountSlider = document.getElementById('spot-pulse-amount-slider');
+        const spotPulseSpeedSlider = document.getElementById('spot-pulse-speed-slider');
+
+        const screenShakeToggle = document.getElementById('screen-shake-toggle');
+        const screenShakeIntensitySlider = document.getElementById('screen-shake-intensity-slider');
+        const screenShakeDurationSlider = document.getElementById('screen-shake-duration-slider');
+
+        const goldGlowToggle = document.getElementById('gold-glow-toggle');
+        const goldGlowSizeSlider = document.getElementById('gold-glow-size-slider');
+        const goldGlowOpacitySlider = document.getElementById('gold-glow-opacity-slider');
+
+        const confettiToggle = document.getElementById('confetti-toggle');
+        const confettiCountSlider = document.getElementById('confetti-count-slider');
+        const confettiSpreadSlider = document.getElementById('confetti-spread-slider');
+
+        const victoryChimeToggle = document.getElementById('victory-chime-toggle');
+        const victoryChimeVolumeSlider = document.getElementById('victory-chime-volume-slider');
+        const victoryChimePitchSlider = document.getElementById('victory-chime-pitch-slider');
+
+        const gridRowsGroup = document.getElementById('grid-rows-group');
+        const spotSizeGroup = document.getElementById('spot-size-group');
+        const flashlightSizeGroup = document.getElementById('flashlight-size-group');
+        const changeTimeGroup = document.getElementById('change-time-group');
+        const blurLevelGroup = document.getElementById('blur-level-group');
+
+        const gridRowsVal = document.getElementById('grid-rows-val');
+        const spotSizeVal = document.getElementById('spot-size-val');
+        const flashlightSizeVal = document.getElementById('flashlight-size-val');
+        const changeTimeVal = document.getElementById('change-time-val');
+        const blurLevelVal = document.getElementById('blur-level-val');
+
+        const metronomeFreqVal = document.getElementById('metronome-freq-val');
+        const metronomePitchVal = document.getElementById('metronome-pitch-val');
+        const metronomeVolumeVal = document.getElementById('metronome-volume-val');
+
+        const spotHdrIntensityVal = document.getElementById('spot-hdr-intensity-val');
+        const spotHdrVibranceVal = document.getElementById('spot-hdr-vibrance-val');
+
+        const chromaticIntensityVal = document.getElementById('chromatic-intensity-val');
+        const chromaticDurationVal = document.getElementById('chromatic-duration-val');
+
+        const spotPulseAmountVal = document.getElementById('spot-pulse-amount-val');
+        const spotPulseSpeedVal = document.getElementById('spot-pulse-speed-val');
+
+        const screenShakeIntensityVal = document.getElementById('screen-shake-intensity-val');
+        const screenShakeDurationVal = document.getElementById('screen-shake-duration-val');
+
+        const goldGlowSizeVal = document.getElementById('gold-glow-size-val');
+        const goldGlowOpacityVal = document.getElementById('gold-glow-opacity-val');
+
+        const confettiCountVal = document.getElementById('confetti-count-val');
+        const confettiSpreadVal = document.getElementById('confetti-spread-val');
+
+        const victoryChimeVolumeVal = document.getElementById('victory-chime-volume-val');
+        const victoryChimePitchVal = document.getElementById('victory-chime-pitch-val');
+
+        const startBtn = document.getElementById('start-btn');
+        const selectFolderBtn = document.getElementById('select-folder-btn');
+        const folderInput = document.getElementById('folder-input');
+
+        const KEYS = ['Q', 'W', 'E', 'R'];
+        const BASE_SINGLE_HEIGHT = 600;
+
+        const settings = {
+            mode: 'qwer',
+            infiniteGrid: false,
+            gridRows: 3,
+            spotAreaRatio: 0.08,
+            flashlightRadius: 90,
+            changeTime: 10,
+            blurLevel: 20,
+
+            metronome: true,
+            metronomeFreq: 2.0,
+            metronomePitch: 90,
+            metronomeVolume: 0.35,
+
+            spotHdr: true,
+            spotHdrIntensity: 0.6,
+            spotHdrVibrance: 0.5,
+
+            chromatic: true,
+            chromaticIntensity: 0.6,
+            chromaticDurationMs: 900,
+
+            spotPulse: true,
+            spotPulseAmount: 0.08,
+            spotPulseSpeed: 1.2,
+
+            screenShake: true,
+            screenShakeIntensity: 0.5,
+            screenShakeDurationMs: 400,
+
+            goldGlow: true,
+            goldGlowSize: 16,
+            goldGlowOpacity: 0.65,
+
+            confetti: true,
+            confettiCount: 40,
+            confettiSpread: 7,
+
+            victoryChime: true,
+            victoryChimeVolume: 0.3,
+            victoryChimePitch: 520
+        };
+
+        let loadedImages = [];
+        const seenFileSignatures = new Set();
+        let currentImage = null;
+        let gridRowsLayout = [];
+        let currentSpots = [];
+        let activeSpot = null;
+        let state = 'IDLE'; // 'IDLE' | 'COVERED' | 'REVEALED' | 'WAITING'
+        let countdownInterval = null;
+        let timeLeft = 10;
+        let pointerPos = null;
+        let showFirstSlideFullscreenHint = false;
+        let fullscreenHintTimeout = null;
+
+        let chromaticBurstStart = 0;
+        let shakeStart = 0;
+        let particles = [];
+        let animFrameId = null;
+
+        let audioCtx = null;
+        let metronomeSchedulerId = null;
+        let nextBeatAudioTime = 0;
+        let lastBeatAudioTime = 0;
+        let beatCounter = 0;
+
+        const sharpCanvas = document.createElement('canvas');
+        const sharpCtx = sharpCanvas.getContext('2d');
+        const chromaCanvas = document.createElement('canvas');
+        const chromaCtx = chromaCanvas.getContext('2d');
+
+        const gridBlurCacheCanvas = document.createElement('canvas');
+        const gridBlurCacheCtx = gridBlurCacheCanvas.getContext('2d');
+        let gridBlurCacheDirty = true;
+
+        topLeftSiteBtn.addEventListener('click', () => {
+            saveFeedback.textContent = 'Placeholder: Back to main website clicked.';
+        });
+
+        function clamp(val, min, max) {
+            return Math.min(max, Math.max(min, val));
+        }
+
+        function isFullscreenActive() {
+            return Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+        }
+
+        function isGameVisible() {
+            return gameContainer.classList.contains('active-view');
+        }
+
+        function ensureAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume().catch(() => {});
+            }
+        }
+
+        function scheduleMetronomePulse(atTime, accent) {
+            if (!audioCtx) return;
+
+            const rootFreq = settings.metronomePitch;
+            const peakGain = Math.min(0.45, Math.max(0.01, settings.metronomeVolume * (accent ? 1.0 : 0.78)));
+
+            const osc = audioCtx.createOscillator();
+            const overtone = audioCtx.createOscillator();
+            const filter = audioCtx.createBiquadFilter();
+            const env = audioCtx.createGain();
+            const overtoneGain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(rootFreq, atTime);
+            osc.frequency.exponentialRampToValueAtTime(Math.max(36, rootFreq * 0.86), atTime + 0.09);
+
+            overtone.type = 'sine';
+            overtone.frequency.setValueAtTime(rootFreq * 2, atTime);
+            overtone.frequency.exponentialRampToValueAtTime(Math.max(70, rootFreq * 1.72), atTime + 0.055);
+
+            overtoneGain.gain.setValueAtTime(0.18, atTime);
+            overtoneGain.gain.exponentialRampToValueAtTime(0.001, atTime + 0.06);
+
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(Math.min(1400, rootFreq * 4.5), atTime);
+            filter.Q.setValueAtTime(0.7, atTime);
+
+            env.gain.setValueAtTime(0.0001, atTime);
+            env.gain.linearRampToValueAtTime(peakGain, atTime + 0.008);
+            env.gain.exponentialRampToValueAtTime(0.0001, atTime + 0.12);
+
+            osc.connect(filter);
+            overtone.connect(overtoneGain);
+            overtoneGain.connect(filter);
+            filter.connect(env);
+            env.connect(audioCtx.destination);
+
+            osc.start(atTime);
+            overtone.start(atTime);
+            osc.stop(atTime + 0.13);
+            osc.stop(atTime + 0.13);
+        }
+
+        function playVictoryChime() {
+            if (!settings.victoryChime || !audioCtx || audioCtx.state !== 'running') return;
+
+            const now = audioCtx.currentTime;
+            const root = settings.victoryChimePitch;
+            const ratios = [1, 1.25, 1.5, 2];
+            const vol = Math.min(0.35, Math.max(0.01, settings.victoryChimeVolume * 0.45));
+
+            ratios.forEach((ratio, idx) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                const startT = now + idx * 0.045;
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(root * ratio, startT);
+
+                gain.gain.setValueAtTime(0.0001, startT);
+                gain.gain.linearRampToValueAtTime(vol, startT + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, startT + 0.75);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(startT);
+                osc.stop(startT + 0.8);
+            });
+        }
+
+        function spawnConfetti(cx, cy) {
+            if (!settings.confetti) return;
+            particles = [];
+            const colors = ['#f472b6', '#c084fc', '#e879f9', '#38bdf8', '#fde047', '#ffffff'];
+            const count = settings.confettiCount;
+            const spread = settings.confettiSpread;
+
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = (0.35 + Math.random() * 0.85) * spread;
+                particles.push({
+                    x: cx,
+                    y: cy,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 1.5,
+                    radius: 3 + Math.random() * 4.5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 1.0,
+                    decay: 0.014 + Math.random() * 0.018
+                });
+            }
+        }
+
+        function isSpotVisibleNow() {
+            return (
+                isGameVisible() &&
+                (state === 'REVEALED' || state === 'WAITING') &&
+                Boolean(activeSpot)
+            );
+        }
+
+        function stopMetronomeScheduler() {
+            if (metronomeSchedulerId) {
+                clearInterval(metronomeSchedulerId);
+                metronomeSchedulerId = null;
+            }
+        }
+
+        function pumpMetronomeQueue() {
+            if (!settings.metronome || !isSpotVisibleNow() || !audioCtx || audioCtx.state !== 'running') {
+                return;
+            }
+
+            const period = 1 / clamp(settings.metronomeFreq, 1, 5);
+            const lookaheadSec = 0.12;
+            const currentAudioTime = audioCtx.currentTime;
+
+            if (nextBeatAudioTime < currentAudioTime - 0.05) {
+                nextBeatAudioTime = currentAudioTime;
+            }
+
+            while (nextBeatAudioTime < currentAudioTime + lookaheadSec) {
+                const isAccent = (beatCounter % 4) === 0;
+                scheduleMetronomePulse(nextBeatAudioTime, isAccent);
+                lastBeatAudioTime = nextBeatAudioTime;
+                beatCounter++;
+                nextBeatAudioTime += period;
+            }
+        }
+
+        function syncMetronomeLoop(resetPhase = false) {
+            stopMetronomeScheduler();
+
+            if (!settings.metronome || !isSpotVisibleNow()) {
+                return;
+            }
+
+            ensureAudioContext();
+            if (!audioCtx) return;
+
+            if (resetPhase || nextBeatAudioTime <= 0) {
+                beatCounter = 0;
+                const startAt = audioCtx.currentTime + 0.01;
+                nextBeatAudioTime = startAt;
+                lastBeatAudioTime = startAt;
+            }
+
+            pumpMetronomeQueue();
+            metronomeSchedulerId = setInterval(() => {
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume().catch(() => {});
+                }
+                pumpMetronomeQueue();
+            }, 25);
+        }
+
+        function getMetronomeBeatImpulse() {
+            if (!settings.metronome || !isSpotVisibleNow() || !audioCtx || audioCtx.state !== 'running') {
+                return null;
+            }
+
+            const freq = clamp(settings.metronomeFreq, 1, 5);
+            const period = 1 / freq;
+            const nowAudio = audioCtx.currentTime;
+
+            let delta = nowAudio - lastBeatAudioTime;
+            if (delta < 0) {
+                const stepsBack = Math.ceil(Math.abs(delta) / period);
+                delta += stepsBack * period;
+            }
+            const phaseInBeat = (delta % period) / period;
+            return Math.pow(Math.max(0, 1 - phaseInBeat), 2.2);
+        }
+
+        function triggerSpotEffects(spot) {
+            const now = performance.now();
+            if (settings.chromatic) chromaticBurstStart = now;
+            if (settings.screenShake) shakeStart = now;
+            spawnConfetti(spot.cx, spot.cy);
+            playVictoryChime();
+        }
+
+        function hasActiveVisualData() {
+            return settings.infiniteGrid ? gridRowsLayout.length > 0 : Boolean(currentImage);
+        }
+
+        function needsContinuousAnimation() {
+            if (!isGameVisible() || !hasActiveVisualData()) return false;
+            const now = performance.now();
+            const hasChroma = settings.chromatic && chromaticBurstStart > 0 && (now - chromaticBurstStart) < settings.chromaticDurationMs;
+            const hasShake = settings.screenShake && shakeStart > 0 && (now - shakeStart) < settings.screenShakeDurationMs;
+            const hasPulse = settings.spotPulse && isSpotVisibleNow();
+            const hasGlowPulse = settings.goldGlow && isSpotVisibleNow();
+            const hasMetronomeBeat = settings.metronome && isSpotVisibleNow();
+            const hasParticles = particles.length > 0;
+            return hasChroma || hasShake || hasPulse || hasGlowPulse || hasMetronomeBeat || hasParticles;
+        }
+
+        function animationTick() {
+            animFrameId = null;
+            if (!isGameVisible() || !hasActiveVisualData()) return;
+
+            render();
+
+            if (needsContinuousAnimation()) {
+                animFrameId = requestAnimationFrame(animationTick);
+            }
+        }
+
+        function ensureAnimationLoop() {
+            if (needsContinuousAnimation() && !animFrameId) {
+                animFrameId = requestAnimationFrame(animationTick);
+            }
+        }
+
+        function clearFullscreenHintTimer() {
+            if (fullscreenHintTimeout) {
+                clearTimeout(fullscreenHintTimeout);
+                fullscreenHintTimeout = null;
+            }
+        }
+
+        function updateFullscreenHintVisibility() {
+            const shouldShow =
+                showFirstSlideFullscreenHint &&
+                isGameVisible() &&
+                (state === 'COVERED' || state === 'WAITING');
+
+            if (shouldShow) {
+                fullscreenHint.style.display = 'block';
+                if (!fullscreenHintTimeout) {
+                    fullscreenHintTimeout = setTimeout(() => {
+                        showFirstSlideFullscreenHint = false;
+                        fullscreenHintTimeout = null;
+                        fullscreenHint.style.display = 'none';
+                    }, 2000);
+                }
+            } else {
+                clearFullscreenHintTimer();
+                fullscreenHint.style.display = 'none';
+            }
+        }
+
+        function getViewportDimensions() {
+            if (isFullscreenActive()) {
+                return {
+                    width: (window.screen && window.screen.width)
+                        ? Math.max(window.innerWidth, window.screen.width)
+                        : window.innerWidth,
+                    height: (window.screen && window.screen.height)
+                        ? Math.max(window.innerHeight, window.screen.height)
+                        : window.innerHeight
+                };
+            }
+            return {
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+        }
+
+        function updateControlsVisibility() {
+            const mode = modeSelect.value;
+            gridRowsGroup.style.display = infiniteGridToggle.checked ? 'block' : 'none';
+            spotSizeGroup.style.display = (mode === 'qwer' || mode === 'random') ? 'block' : 'none';
+            flashlightSizeGroup.style.display = (mode === 'flashlight') ? 'block' : 'none';
+            changeTimeGroup.style.display = 'block';
+            blurLevelGroup.style.display = 'block';
+        }
+
+        function rescaleSpotRadii(spot, newAreaRatio) {
+            if (!spot || !canvas.width || !canvas.height) return;
+            const targetArea = canvas.width * canvas.height * newAreaRatio;
+            const currentRatio = spot.rx / Math.max(1, spot.ry);
+            const isNearlyCircle = Math.abs(currentRatio - 1) < 0.05;
+
+            if (isNearlyCircle) {
+                const r = Math.sqrt(targetArea / Math.PI);
+                spot.rx = r;
+                spot.ry = r;
+            } else {
+                spot.rx = Math.sqrt((targetArea * currentRatio) / Math.PI);
+                spot.ry = targetArea / (Math.PI * spot.rx);
+            }
+        }
+
+        function refreshLabelsFromSettings() {
+            modeSelect.value = settings.mode;
+            infiniteGridToggle.checked = settings.infiniteGrid;
+            gridRowsSlider.value = settings.gridRows;
+            spotSizeSlider.value = Math.round(settings.spotAreaRatio * 100);
+            flashlightSizeSlider.value = settings.flashlightRadius;
+            changeTimeSlider.value = settings.changeTime;
+            blurLevelSlider.value = settings.blurLevel;
+
+            metronomeToggle.checked = settings.metronome;
+            metronomeFreqSlider.value = settings.metronomeFreq;
+            metronomePitchSlider.value = settings.metronomePitch;
+            metronomeVolumeSlider.value = Math.round(settings.metronomeVolume * 100);
+
+            spotHdrToggle.checked = settings.spotHdr;
+            spotHdrIntensitySlider.value = Math.round(settings.spotHdrIntensity * 100);
+            spotHdrVibranceSlider.value = Math.round(settings.spotHdrVibrance * 100);
+
+            chromaticToggle.checked = settings.chromatic;
+            chromaticIntensitySlider.value = Math.round(settings.chromaticIntensity * 100);
+            chromaticDurationSlider.value = (settings.chromaticDurationMs / 1000).toFixed(1);
+
+            spotPulseToggle.checked = settings.spotPulse;
+            spotPulseAmountSlider.value = Math.round(settings.spotPulseAmount * 100);
+            spotPulseSpeedSlider.value = settings.spotPulseSpeed;
+
+            screenShakeToggle.checked = settings.screenShake;
+            screenShakeIntensitySlider.value = Math.round(settings.screenShakeIntensity * 100);
+            screenShakeDurationSlider.value = (settings.screenShakeDurationMs / 1000).toFixed(1);
+
+            goldGlowToggle.checked = settings.goldGlow;
+            goldGlowSizeSlider.value = settings.goldGlowSize;
+            goldGlowOpacitySlider.value = Math.round(settings.goldGlowOpacity * 100);
+
+            confettiToggle.checked = settings.confetti;
+            confettiCountSlider.value = settings.confettiCount;
+            confettiSpreadSlider.value = settings.confettiSpread;
+
+            victoryChimeToggle.checked = settings.victoryChime;
+            victoryChimeVolumeSlider.value = Math.round(settings.victoryChimeVolume * 100);
+            victoryChimePitchSlider.value = settings.victoryChimePitch;
+
+            gridRowsVal.textContent = `${settings.gridRows}`;
+            spotSizeVal.textContent = `${Math.round(settings.spotAreaRatio * 100)}%`;
+            flashlightSizeVal.textContent = `${settings.flashlightRadius}px`;
+            changeTimeVal.textContent = `${settings.changeTime}s`;
+            blurLevelVal.textContent = `${settings.blurLevel}px`;
+
+            metronomeFreqVal.textContent = `${settings.metronomeFreq.toFixed(1)} Hz`;
+            metronomePitchVal.textContent = `${settings.metronomePitch} Hz`;
+            metronomeVolumeVal.textContent = `${Math.round(settings.metronomeVolume * 100)}%`;
+
+            spotHdrIntensityVal.textContent = `${Math.round(settings.spotHdrIntensity * 100)}%`;
+            spotHdrVibranceVal.textContent = `${Math.round(settings.spotHdrVibrance * 100)}%`;
+
+            chromaticIntensityVal.textContent = `${Math.round(settings.chromaticIntensity * 100)}%`;
+            chromaticDurationVal.textContent = `${(settings.chromaticDurationMs / 1000).toFixed(1)}s`;
+
+            spotPulseAmountVal.textContent = `${Math.round(settings.spotPulseAmount * 100)}%`;
+            spotPulseSpeedVal.textContent = `${settings.spotPulseSpeed.toFixed(1)}x`;
+
+            screenShakeIntensityVal.textContent = `${Math.round(settings.screenShakeIntensity * 100)}%`;
+            screenShakeDurationVal.textContent = `${(settings.screenShakeDurationMs / 1000).toFixed(1)}s`;
+
+            goldGlowSizeVal.textContent = `${settings.goldGlowSize}px`;
+            goldGlowOpacityVal.textContent = `${Math.round(settings.goldGlowOpacity * 100)}%`;
+
+            confettiCountVal.textContent = `${settings.confettiCount}`;
+            confettiSpreadVal.textContent = `${settings.confettiSpread}px`;
+
+            victoryChimeVolumeVal.textContent = `${Math.round(settings.victoryChimeVolume * 100)}%`;
+            victoryChimePitchVal.textContent = `${settings.victoryChimePitch} Hz`;
+        }
+
+        function syncSettingsFromUI() {
+            const prevMode = settings.mode;
+            const prevSpotRatio = settings.spotAreaRatio;
+            const prevGrid = settings.infiniteGrid;
+            const prevRows = settings.gridRows;
+            const prevBlur = settings.blurLevel;
+            const prevMetronome = settings.metronome;
+            const prevMetronomeFreq = settings.metronomeFreq;
+
+            settings.mode = modeSelect.value;
+            settings.infiniteGrid = infiniteGridToggle.checked;
+            settings.gridRows = Number(gridRowsSlider.value);
+            settings.spotAreaRatio = Number(spotSizeSlider.value) / 100;
+            settings.flashlightRadius = Number(flashlightSizeSlider.value);
+            settings.changeTime = Number(changeTimeSlider.value);
+            settings.blurLevel = Number(blurLevelSlider.value);
+
+            settings.metronome = metronomeToggle.checked;
+            settings.metronomeFreq = Number(metronomeFreqSlider.value);
+            settings.metronomePitch = Number(metronomePitchSlider.value);
+            settings.metronomeVolume = Number(metronomeVolumeSlider.value) / 100;
+
+            settings.spotHdr = spotHdrToggle.checked;
+            settings.spotHdrIntensity = Number(spotHdrIntensitySlider.value) / 100;
+            settings.spotHdrVibrance = Number(spotHdrVibranceSlider.value) / 100;
+
+            settings.chromatic = chromaticToggle.checked;
+            settings.chromaticIntensity = Number(chromaticIntensitySlider.value) / 100;
+            settings.chromaticDurationMs = Math.round(Number(chromaticDurationSlider.value) * 1000);
+
+            settings.spotPulse = spotPulseToggle.checked;
+            settings.spotPulseAmount = Number(spotPulseAmountSlider.value) / 100;
+            settings.spotPulseSpeed = Number(spotPulseSpeedSlider.value);
+
+            settings.screenShake = screenShakeToggle.checked;
+            settings.screenShakeIntensity = Number(screenShakeIntensitySlider.value) / 100;
+            settings.screenShakeDurationMs = Math.round(Number(screenShakeDurationSlider.value) * 1000);
+
+            settings.goldGlow = goldGlowToggle.checked;
+            settings.goldGlowSize = Number(goldGlowSizeSlider.value);
+            settings.goldGlowOpacity = Number(goldGlowOpacitySlider.value) / 100;
+
+            settings.confetti = confettiToggle.checked;
+            settings.confettiCount = Number(confettiCountSlider.value);
+            settings.confettiSpread = Number(confettiSpreadSlider.value);
+
+            settings.victoryChime = victoryChimeToggle.checked;
+            settings.victoryChimeVolume = Number(victoryChimeVolumeSlider.value) / 100;
+            settings.victoryChimePitch = Number(victoryChimePitchSlider.value);
+
+            refreshLabelsFromSettings();
+            updateControlsVisibility();
+
+            if (prevBlur !== settings.blurLevel) {
+                gridBlurCacheDirty = true;
+            }
+
+            if (prevMetronome !== settings.metronome || prevMetronomeFreq !== settings.metronomeFreq) {
+                syncMetronomeLoop(prevMetronomeFreq !== settings.metronomeFreq);
+            }
+
+            if (isGameVisible() && hasActiveVisualData()) {
+                if (prevMode !== settings.mode || prevGrid !== settings.infiniteGrid) {
+                    startRoundForCurrentData();
+                    return;
+                }
+
+                if (settings.infiniteGrid && prevRows !== settings.gridRows) {
+                    adjustCanvasSize();
+                    buildGridLayout();
+                    if (settings.mode === 'qwer') {
+                        currentSpots = generateSpots(KEYS.length, settings.spotAreaRatio, true);
+                    } else if (settings.mode === 'random') {
+                        const [singleSpot] = generateSpots(1, settings.spotAreaRatio, false);
+                        activeSpot = singleSpot;
+                    }
+                    ensureAnimationLoop();
+                    render();
+                    return;
+                }
+
+                if (prevSpotRatio !== settings.spotAreaRatio) {
+                    currentSpots.forEach(s => rescaleSpotRadii(s, settings.spotAreaRatio));
+                    if (activeSpot && settings.mode === 'random') {
+                        rescaleSpotRadii(activeSpot, settings.spotAreaRatio);
+                    }
+                }
+
+                if (activeSpot && settings.mode === 'flashlight') {
+                    activeSpot.rx = settings.flashlightRadius;
+                    activeSpot.ry = settings.flashlightRadius;
+                }
+
+                ensureAnimationLoop();
+                render();
+            }
+        }
+
+        disableAllEffectsBtn.addEventListener('click', () => {
+            settings.metronome = false;
+            settings.spotHdr = false;
+            settings.chromatic = false;
+            settings.spotPulse = false;
+            settings.screenShake = false;
+            settings.goldGlow = false;
+            settings.confetti = false;
+            settings.victoryChime = false;
+            particles = [];
+            chromaticBurstStart = 0;
+            shakeStart = 0;
+            refreshLabelsFromSettings();
+            syncMetronomeLoop(true);
+            ensureAnimationLoop();
+            render();
+        });
+
+        function exportAllSettings() {
+            const payload = {
+                version: 1,
+                settings: { ...settings }
+            };
+            presetCodeInput.value = JSON.stringify(payload);
+            saveFeedback.textContent = 'Exported full settings code.';
+        }
+
+        function importAllSettings() {
+            const raw = presetCodeInput.value.trim();
+            if (!raw) {
+                saveFeedback.textContent = 'Paste a valid settings code first.';
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(raw);
+                const src = (parsed && typeof parsed === 'object' && parsed.settings && typeof parsed.settings === 'object')
+                    ? parsed.settings
+                    : parsed;
+
+                if (!src || typeof src !== 'object') {
+                    throw new Error('Invalid structure');
+                }
+
+                const validModes = ['qwer', 'flashlight', 'random'];
+                if (typeof src.mode === 'string' && validModes.includes(src.mode)) {
+                    settings.mode = src.mode;
+                }
+                if (typeof src.infiniteGrid === 'boolean') settings.infiniteGrid = src.infiniteGrid;
+                if (typeof src.gridRows === 'number') settings.gridRows = Math.round(clamp(src.gridRows, 1, 8));
+                if (typeof src.spotAreaRatio === 'number') settings.spotAreaRatio = clamp(src.spotAreaRatio, 0.03, 0.25);
+                if (typeof src.flashlightRadius === 'number') settings.flashlightRadius = Math.round(clamp(src.flashlightRadius, 30, 240));
+                if (typeof src.changeTime === 'number') settings.changeTime = Math.round(clamp(src.changeTime, 1, 20));
+                if (typeof src.blurLevel === 'number') settings.blurLevel = Math.round(clamp(src.blurLevel, 4, 50));
+
+                if (typeof src.metronome === 'boolean') settings.metronome = src.metronome;
+                if (typeof src.metronomeFreq === 'number') settings.metronomeFreq = clamp(src.metronomeFreq, 1, 5);
+                if (typeof src.metronomePitch === 'number') settings.metronomePitch = Math.round(clamp(src.metronomePitch, 50, 220));
+                if (typeof src.metronomeVolume === 'number') settings.metronomeVolume = clamp(src.metronomeVolume, 0.05, 1);
+
+                if (typeof src.spotHdr === 'boolean') settings.spotHdr = src.spotHdr;
+                if (typeof src.spotHdrIntensity === 'number') settings.spotHdrIntensity = clamp(src.spotHdrIntensity, 0.1, 1);
+                if (typeof src.spotHdrVibrance === 'number') settings.spotHdrVibrance = clamp(src.spotHdrVibrance, 0, 1);
+
+                if (typeof src.chromatic === 'boolean') settings.chromatic = src.chromatic;
+                if (typeof src.chromaticIntensity === 'number') settings.chromaticIntensity = clamp(src.chromaticIntensity, 0.1, 1);
+                if (typeof src.chromaticDurationMs === 'number') settings.chromaticDurationMs = Math.round(clamp(src.chromaticDurationMs, 300, 2500));
+
+                if (typeof src.spotPulse === 'boolean') settings.spotPulse = src.spotPulse;
+                if (typeof src.spotPulseAmount === 'number') settings.spotPulseAmount = clamp(src.spotPulseAmount, 0.02, 0.2);
+                if (typeof src.spotPulseSpeed === 'number') settings.spotPulseSpeed = clamp(src.spotPulseSpeed, 0.5, 3);
+
+                if (typeof src.screenShake === 'boolean') settings.screenShake = src.screenShake;
+                if (typeof src.screenShakeIntensity === 'number') settings.screenShakeIntensity = clamp(src.screenShakeIntensity, 0.1, 1);
+                if (typeof src.screenShakeDurationMs === 'number') settings.screenShakeDurationMs = Math.round(clamp(src.screenShakeDurationMs, 200, 1200));
+
+                if (typeof src.goldGlow === 'boolean') settings.goldGlow = src.goldGlow;
+                if (typeof src.goldGlowSize === 'number') settings.goldGlowSize = Math.round(clamp(src.goldGlowSize, 4, 40));
+                if (typeof src.goldGlowOpacity === 'number') settings.goldGlowOpacity = clamp(src.goldGlowOpacity, 0.15, 1);
+
+                if (typeof src.confetti === 'boolean') settings.confetti = src.confetti;
+                if (typeof src.confettiCount === 'number') settings.confettiCount = Math.round(clamp(src.confettiCount, 10, 120));
+                if (typeof src.confettiSpread === 'number') settings.confettiSpread = Math.round(clamp(src.confettiSpread, 2, 16));
+
+                if (typeof src.victoryChime === 'boolean') settings.victoryChime = src.victoryChime;
+                if (typeof src.victoryChimeVolume === 'number') settings.victoryChimeVolume = clamp(src.victoryChimeVolume, 0.05, 1);
+                if (typeof src.victoryChimePitch === 'number') settings.victoryChimePitch = Math.round(clamp(src.victoryChimePitch, 260, 880));
+
+                gridBlurCacheDirty = true;
+                refreshLabelsFromSettings();
+                updateControlsVisibility();
+                syncMetronomeLoop(true);
+
+                if (isGameVisible() && hasActiveVisualData()) {
+                    startRoundForCurrentData();
+                } else {
+                    ensureAnimationLoop();
+                    render();
+                }
+
+                saveFeedback.textContent = 'Imported settings successfully.';
+            } catch (_) {
+                saveFeedback.textContent = 'Invalid settings code.';
+            }
+        }
+
+        exportSettingsBtn.addEventListener('click', exportAllSettings);
+        importSettingsBtn.addEventListener('click', importAllSettings);
+
+        [
+            modeSelect,
+            infiniteGridToggle,
+            gridRowsSlider,
+            spotSizeSlider,
+            flashlightSizeSlider,
+            changeTimeSlider,
+            blurLevelSlider,
+            metronomeToggle,
+            metronomeFreqSlider,
+            metronomePitchSlider,
+            metronomeVolumeSlider,
+            spotHdrToggle,
+            spotHdrIntensitySlider,
+            spotHdrVibranceSlider,
+            chromaticToggle,
+            chromaticIntensitySlider,
+            chromaticDurationSlider,
+            spotPulseToggle,
+            spotPulseAmountSlider,
+            spotPulseSpeedSlider,
+            screenShakeToggle,
+            screenShakeIntensitySlider,
+            screenShakeDurationSlider,
+            goldGlowToggle,
+            goldGlowSizeSlider,
+            goldGlowOpacitySlider,
+            confettiToggle,
+            confettiCountSlider,
+            confettiSpreadSlider,
+            victoryChimeToggle,
+            victoryChimeVolumeSlider,
+            victoryChimePitchSlider
+        ].forEach(el => {
+            el.addEventListener('input', syncSettingsFromUI);
+            el.addEventListener('change', syncSettingsFromUI);
+        });
+
+        refreshLabelsFromSettings();
+        updateControlsVisibility();
+
+        selectFolderBtn.addEventListener('click', () => {
+            ensureAudioContext();
+            folderInput.click();
+        });
+
+        function readImageFile(file) {
+            return new Promise((resolve) => {
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = () => {
+                    URL.revokeObjectURL(url);
+                    resolve(img);
+                };
+                img.onerror = () => {
+                    URL.revokeObjectURL(url);
+                    resolve(null);
+                };
+                img.src = url;
+            });
+        }
+
+        folderInput.addEventListener('change', async (e) => {
+            syncSettingsFromUI();
+            const files = Array.from(e.target.files).filter(file => file.type.startsWith('image/'));
+            folderInput.value = '';
+
+            if (files.length === 0) {
+                if (loadedImages.length === 0) {
+                    statusText.textContent = 'No images found in the selected folder. Try again.';
+                } else {
+                    statusText.textContent = `No new images found. ${loadedImages.length} image(s) ready. Click Start or select another folder.`;
+                }
+                return;
+            }
+
+            const uniqueFiles = [];
+            for (const file of files) {
+                const sig = `${file.name}__${file.size}__${file.lastModified}`;
+                if (!seenFileSignatures.has(sig)) {
+                    seenFileSignatures.add(sig);
+                    uniqueFiles.push(file);
+                }
+            }
+
+            statusText.textContent = `Loading ${uniqueFiles.length} new image(s)...`;
+            const imgs = await Promise.all(uniqueFiles.map(readImageFile));
+            const decoded = imgs.filter(Boolean);
+            loadedImages.push(...decoded);
+
+            if (loadedImages.length === 0) {
+                statusText.textContent = 'Could not decode any images from the folder.';
+                return;
+            }
+
+            startBtn.style.display = 'inline-block';
+            statusText.textContent = `${loadedImages.length} image(s) loaded. Click Start or select another folder to add more.`;
+        });
+
+        startBtn.addEventListener('click', () => {
+            if (loadedImages.length === 0) return;
+            ensureAudioContext();
+            syncSettingsFromUI();
+            clearFullscreenHintTimer();
+            showFirstSlideFullscreenHint = true;
+            openGameView();
+            loadNextImage();
+        });
+
+        menuBackBtn.addEventListener('click', async () => {
+            clearTimer();
+            clearFullscreenHintTimer();
+            stopMetronomeScheduler();
+            particles = [];
+            state = 'IDLE';
+            pointerPos = null;
+            showFirstSlideFullscreenHint = false;
+            updateFullscreenHintVisibility();
+            gameContainer.classList.remove('active-view');
+            gameContainer.classList.remove('grid-mode');
+            menuWrapper.style.display = 'flex';
+            topLeftSiteBtn.style.display = 'block';
+            topLeftLinks.style.display = 'flex';
+
+            if (isFullscreenActive()) {
+                try {
+                    if (document.exitFullscreen) await document.exitFullscreen();
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                } catch (_) {}
+            }
+
+            if (loadedImages.length > 0) {
+                startBtn.style.display = 'inline-block';
+                statusText.textContent = `${loadedImages.length} image(s) ready. Click Start or select another folder.`;
+            }
+        });
+
+        function openGameView() {
+            menuWrapper.style.display = 'none';
+            topLeftSiteBtn.style.display = 'none';
+            topLeftLinks.style.display = 'none';
+            gameContainer.classList.add('active-view');
+            updateFullscreenHintVisibility();
+        }
+
+        function clearTimer() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+            timerElement.style.display = 'none';
+        }
+
+        function buildGridLayout() {
+            gridRowsLayout = [];
+            gridBlurCacheDirty = true;
+            if (!settings.infiniteGrid || loadedImages.length === 0) return;
+
+            const rows = Math.max(1, settings.gridRows);
+            const rowHeight = canvas.height / rows;
+            const minTileWidth = Math.max(24, Math.round(rowHeight * 0.35));
+
+            for (let r = 0; r < rows; r++) {
+                const yTop = Math.floor(r * rowHeight);
+                const yBottom = (r === rows - 1) ? canvas.height : Math.floor((r + 1) * rowHeight);
+                const actualRowHeight = Math.max(1, yBottom - yTop);
+
+                const tiles = [];
+                let cursorX = 0;
+
+                while (cursorX < canvas.width) {
+                    const img = loadedImages[Math.floor(Math.random() * loadedImages.length)];
+                    const rawAspect = (img.width && img.height) ? (img.width / img.height) : 1;
+                    const clampedAspect = Math.min(3.0, Math.max(0.4, rawAspect));
+                    const tileWidth = Math.max(minTileWidth, Math.round(actualRowHeight * clampedAspect));
+
+                    tiles.push({ img, x: cursorX, width: tileWidth });
+                    cursorX += tileWidth;
+                }
+
+                gridRowsLayout.push({ y: yTop, height: actualRowHeight, tiles });
+            }
+        }
+
+        function ensureGridBlurCache() {
+            if (!settings.infiniteGrid) return;
+            if (
+                gridBlurCacheCanvas.width !== canvas.width ||
+                gridBlurCacheCanvas.height !== canvas.height
+            ) {
+                gridBlurCacheCanvas.width = canvas.width;
+                gridBlurCacheCanvas.height = canvas.height;
+                gridBlurCacheDirty = true;
+            }
+
+            if (!gridBlurCacheDirty) return;
+
+            gridBlurCacheCtx.clearRect(0, 0, gridBlurCacheCanvas.width, gridBlurCacheCanvas.height);
+            gridBlurCacheCtx.save();
+            gridBlurCacheCtx.filter = `blur(${settings.blurLevel}px)`;
+            gridRowsLayout.forEach(row => {
+                row.tiles.forEach(tile => {
+                    gridBlurCacheCtx.drawImage(tile.img, tile.x, row.y, tile.width, row.height);
+                });
+            });
+            gridBlurCacheCtx.restore();
+            gridBlurCacheDirty = false;
+        }
+
+        function startRoundForCurrentData() {
+            clearTimer();
+            stopMetronomeScheduler();
+            activeSpot = null;
+            pointerPos = null;
+            particles = [];
+            gameContainer.classList.toggle('grid-mode', settings.infiniteGrid);
+            adjustCanvasSize();
+
+            if (settings.infiniteGrid) {
+                buildGridLayout();
+            }
+
+            if (settings.mode === 'qwer') {
+                state = 'COVERED';
+                currentSpots = generateSpots(KEYS.length, settings.spotAreaRatio, true);
+                updateFullscreenHintVisibility();
+                render();
+            } else if (settings.mode === 'flashlight') {
+                state = 'COVERED';
+                currentSpots = [];
+                updateFullscreenHintVisibility();
+                render();
+            } else if (settings.mode === 'random') {
+                const [singleSpot] = generateSpots(1, settings.spotAreaRatio, false);
+                currentSpots = [];
+                activeSpot = singleSpot;
+                state = 'WAITING';
+                updateFullscreenHintVisibility();
+                triggerSpotEffects(singleSpot);
+                syncMetronomeLoop(true);
+                ensureAnimationLoop();
+                render();
+                startTimer();
+            }
+        }
+
+        function loadNextImage() {
+            if (loadedImages.length === 0) return;
+            clearTimer();
+            stopMetronomeScheduler();
+            activeSpot = null;
+            pointerPos = null;
+
+            currentImage = loadedImages[Math.floor(Math.random() * loadedImages.length)];
+            if (!isGameVisible()) return;
+            startRoundForCurrentData();
+        }
+
+        function adjustCanvasSize() {
+            const vp = getViewportDimensions();
+            const fs = isFullscreenActive();
+
+            if (settings.infiniteGrid) {
+                canvas.width = Math.max(200, Math.round(vp.width));
+                canvas.height = Math.max(200, Math.round(vp.height));
+                sharpCanvas.width = canvas.width;
+                sharpCanvas.height = canvas.height;
+                chromaCanvas.width = canvas.width;
+                chromaCanvas.height = canvas.height;
+                gridBlurCacheDirty = true;
+                return;
+            }
+
+            if (!currentImage || !currentImage.width || !currentImage.height) return;
+
+            const imgAspect = currentImage.width / currentImage.height;
+            const maxW = fs ? Math.max(240, Math.round(vp.width * 0.96)) : Math.max(240, Math.round(vp.width * 0.9));
+            const maxH = fs
+                ? Math.max(240, Math.round(vp.height * 0.94))
+                : Math.min(BASE_SINGLE_HEIGHT, Math.max(240, Math.round(vp.height * 0.82)));
+
+            let targetWidth = Math.round(maxH * imgAspect);
+            let targetHeight = maxH;
+
+            if (targetWidth > maxW) {
+                targetWidth = maxW;
+                targetHeight = Math.max(120, Math.round(targetWidth / imgAspect));
+            }
+
+            canvas.width = Math.max(120, targetWidth);
+            canvas.height = Math.max(120, targetHeight);
+
+            sharpCanvas.width = canvas.width;
+            sharpCanvas.height = canvas.height;
+            chromaCanvas.width = canvas.width;
+            chromaCanvas.height = canvas.height;
+        }
+
+        function drawBlurredBackground(targetCtx) {
+            if (settings.infiniteGrid) {
+                ensureGridBlurCache();
+                targetCtx.drawImage(gridBlurCacheCanvas, 0, 0);
+                return;
+            }
+
+            if (currentImage) {
+                targetCtx.save();
+                targetCtx.filter = `blur(${settings.blurLevel}px)`;
+                targetCtx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+                targetCtx.restore();
+            }
+        }
+
+        function drawSharpSource(targetCtx, filterCss) {
+            targetCtx.save();
+            targetCtx.filter = filterCss;
+
+            if (settings.infiniteGrid) {
+                gridRowsLayout.forEach(row => {
+                    row.tiles.forEach(tile => {
+                        targetCtx.drawImage(tile.img, tile.x, row.y, tile.width, row.height);
+                    });
+                });
+            } else if (currentImage) {
+                targetCtx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+            }
+
+            targetCtx.restore();
+        }
+
+        function createSingleSpot(keyLabel, areaRatio, existingSpots, allowEdgeTouch) {
+            const targetArea = canvas.width * canvas.height * areaRatio;
+            const baseRadius = Math.sqrt(targetArea / Math.PI);
+            const minDistance = Math.min(
+                baseRadius * 2.05,
+                Math.max(canvas.width, canvas.height) * 0.35
+            );
+
+            let bestCandidate = null;
+
+            for (let attempt = 0; attempt < 500; attempt++) {
+                const isCircle = Math.random() > 0.5;
+                let rx, ry;
+
+                if (isCircle) {
+                    rx = baseRadius;
+                    ry = baseRadius;
+                } else {
+                    const factor = 1.2 + Math.random() * 0.3;
+                    rx = Math.sqrt(targetArea / (Math.PI * factor)) * factor;
+                    ry = targetArea / (Math.PI * rx);
+                }
+
+                const edgeOffsetX = allowEdgeTouch ? rx * 0.72 : rx + 8;
+                const edgeOffsetY = allowEdgeTouch ? ry * 0.72 : ry + 8;
+
+                const minX = Math.min(edgeOffsetX, canvas.width / 2);
+                const maxX = Math.max(minX, canvas.width - edgeOffsetX);
+                const minY = Math.min(edgeOffsetY, canvas.height / 2);
+                const maxY = Math.max(minY, canvas.height - edgeOffsetY);
+
+                const cx = minX + Math.random() * Math.max(0, maxX - minX);
+                const cy = minY + Math.random() * Math.max(0, maxY - minY);
+
+                const candidate = { key: keyLabel, cx, cy, rx, ry };
+                bestCandidate = candidate;
+
+                const hasCollision = existingSpots.some(spot => {
+                    return Math.hypot(spot.cx - cx, spot.cy - cy) < minDistance;
+                });
+
+                if (!hasCollision) return candidate;
+            }
+
+            return bestCandidate;
+        }
+
+        function generateSpots(count, areaRatio, allowEdgeTouch) {
+            const spots = [];
+            for (let i = 0; i < count; i++) {
+                const label = KEYS[i] || '';
+                const spot = createSingleSpot(label, areaRatio, spots, allowEdgeTouch);
+                spots.push(spot);
+            }
+            return spots;
+        }
+
+        function getPulseScale(nowMs, beatImpulse) {
+            if (!settings.spotPulse) return 1;
+            if (beatImpulse !== null) {
+                return 1 + beatImpulse * settings.spotPulseAmount;
+            }
+            const phase = nowMs * 0.006 * settings.spotPulseSpeed;
+            return 1 + Math.sin(phase) * settings.spotPulseAmount;
+        }
+
+        function renderBlurredWithSoftSpot(spot, nowMs, beatImpulse) {
+            if (!hasActiveVisualData()) return;
+
+            drawBlurredBackground(ctx);
+
+            ctx.fillStyle = 'rgba(15, 3, 35, 0.25)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (spot) {
+                const pulseScale = getPulseScale(nowMs, beatImpulse);
+                const rx = Math.max(8, spot.rx * pulseScale);
+                const ry = Math.max(8, spot.ry * pulseScale);
+                const outerR = Math.max(rx, ry) * 1.25;
+
+                const beatBoost = beatImpulse !== null ? beatImpulse * 0.18 : 0;
+
+                let sharpFilterCss = 'none';
+                if (settings.spotHdr || beatBoost > 0) {
+                    const i = (settings.spotHdr ? settings.spotHdrIntensity : 0) + beatBoost;
+                    const v = settings.spotHdr ? settings.spotHdrVibrance : 0;
+                    const contrastVal = (1 + i * 0.45).toFixed(2);
+                    const brightnessVal = (1 + i * 0.25).toFixed(2);
+                    const saturateVal = (1 + i * 0.4 + v * 0.65).toFixed(2);
+                    sharpFilterCss = `contrast(${contrastVal}) brightness(${brightnessVal}) saturate(${saturateVal})`;
+                }
+
+                sharpCtx.clearRect(0, 0, sharpCanvas.width, sharpCanvas.height);
+                sharpCtx.save();
+                sharpCtx.globalCompositeOperation = 'source-over';
+                drawSharpSource(sharpCtx, sharpFilterCss);
+
+                sharpCtx.globalCompositeOperation = 'destination-in';
+                sharpCtx.translate(spot.cx, spot.cy);
+                sharpCtx.scale(rx / outerR, ry / outerR);
+
+                const grad = sharpCtx.createRadialGradient(0, 0, outerR * 0.25, 0, 0, outerR);
+                grad.addColorStop(0, 'rgba(0, 0, 0, 1)');
+                grad.addColorStop(0.6, 'rgba(0, 0, 0, 0.85)');
+                grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+                sharpCtx.fillStyle = grad;
+                sharpCtx.beginPath();
+                sharpCtx.arc(0, 0, outerR, 0, Math.PI * 2);
+                sharpCtx.fill();
+                sharpCtx.restore();
+
+                ctx.drawImage(sharpCanvas, 0, 0);
+
+                if (settings.goldGlow) {
+                    const glowFactor = beatImpulse !== null
+                        ? (0.45 + beatImpulse * 0.55)
+                        : (0.75 + Math.sin(nowMs * 0.007) * 0.25);
+                    const alpha = Math.min(1, settings.goldGlowOpacity * glowFactor);
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.ellipse(spot.cx, spot.cy, rx, ry, 0, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(255, 215, 0, ${alpha.toFixed(3)})`;
+                    ctx.lineWidth = 3.5;
+                    ctx.shadowColor = '#ffd700';
+                    ctx.shadowBlur = settings.goldGlowSize * glowFactor;
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            }
+        }
+
+        function renderChromaticAberrationOverlay(nowMs) {
+            if (!settings.chromatic || chromaticBurstStart <= 0) return;
+            const elapsed = nowMs - chromaticBurstStart;
+            const duration = settings.chromaticDurationMs;
+            if (elapsed >= duration) {
+                chromaticBurstStart = 0;
+                return;
+            }
+
+            const progress = elapsed / duration;
+            const strength = Math.pow(1 - progress, 1.8) * settings.chromaticIntensity;
+            const shift = Math.max(4, Math.min(canvas.width, canvas.height) * 0.035) * strength;
+
+            chromaCtx.clearRect(0, 0, chromaCanvas.width, chromaCanvas.height);
+            chromaCtx.save();
+            chromaCtx.globalAlpha = 0.55 * strength;
+            chromaCtx.globalCompositeOperation = 'screen';
+
+            chromaCtx.save();
+            chromaCtx.filter = 'hue-rotate(-45deg) saturate(2.5)';
+            chromaCtx.drawImage(canvas, -shift, 0, canvas.width, canvas.height);
+            chromaCtx.restore();
+
+            chromaCtx.save();
+            chromaCtx.filter = 'hue-rotate(155deg) saturate(2.5)';
+            chromaCtx.drawImage(canvas, shift, 0, canvas.width, canvas.height);
+            chromaCtx.restore();
+
+            chromaCtx.restore();
+
+            ctx.save();
+            ctx.drawImage(chromaCanvas, 0, 0);
+            ctx.restore();
+        }
+
+        function renderParticles() {
+            if (particles.length === 0) return;
+
+            ctx.save();
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.14;
+                p.life -= p.decay;
+
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius * p.life, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life;
+                ctx.fill();
+            }
+            ctx.restore();
+        }
+
+        function renderFlashlightPreview() {
+            if (!pointerPos) return;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(pointerPos.x, pointerPos.y, settings.flashlightRadius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(244, 114, 182, 0.14)';
+            ctx.strokeStyle = 'rgba(232, 121, 249, 0.9)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 6]);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function render() {
+            if (!hasActiveVisualData()) return;
+            const nowMs = performance.now();
+            const beatImpulse = getMetronomeBeatImpulse();
+
+            ctx.save();
+
+            if (settings.screenShake && shakeStart > 0) {
+                const elapsed = nowMs - shakeStart;
+                const duration = settings.screenShakeDurationMs;
+                if (elapsed < duration) {
+                    const progress = 1 - elapsed / duration;
+                    const maxAmp = 22 * settings.screenShakeIntensity * progress;
+                    const dx = (Math.random() - 0.5) * 2 * maxAmp;
+                    const dy = (Math.random() - 0.5) * 2 * maxAmp;
+                    ctx.translate(dx, dy);
+                } else {
+                    shakeStart = 0;
+                }
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (state === 'COVERED') {
+                ctx.fillStyle = '#090214';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                if (settings.mode === 'qwer') {
+                    currentSpots.forEach(spot => {
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.ellipse(spot.cx, spot.cy, spot.rx, spot.ry, 0, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(30, 11, 54, 0.88)';
+                        ctx.strokeStyle = '#e879f9';
+                        ctx.lineWidth = 3;
+                        ctx.fill();
+                        ctx.stroke();
+
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = 'bold 28px Outfit, sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(spot.key, spot.cx, spot.cy);
+                        ctx.restore();
+                    });
+                } else if (settings.mode === 'flashlight') {
+                    renderFlashlightPreview();
+                }
+            } else if (state === 'REVEALED' || state === 'WAITING') {
+                renderBlurredWithSoftSpot(activeSpot, nowMs, beatImpulse);
+                renderChromaticAberrationOverlay(nowMs);
+                renderParticles();
+            }
+
+            ctx.restore();
+        }
+
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: ((e.clientX - rect.left) / Math.max(1, rect.width)) * canvas.width,
+                y: ((e.clientY - rect.top) / Math.max(1, rect.height)) * canvas.height
+            };
+        }
+
+        function isPointInSpot(x, y, spot) {
+            const dx = (x - spot.cx) / Math.max(1, spot.rx);
+            const dy = (y - spot.cy) / Math.max(1, spot.ry);
+            return (dx * dx + dy * dy) <= 1;
+        }
+
+        function revealWithSpot(spot) {
+            ensureAudioContext();
+            showFirstSlideFullscreenHint = false;
+            updateFullscreenHintVisibility();
+            activeSpot = spot;
+            state = 'REVEALED';
+            triggerSpotEffects(spot);
+            syncMetronomeLoop(true);
+            ensureAnimationLoop();
+            render();
+            startTimer();
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (settings.mode !== 'flashlight' || state !== 'COVERED') return;
+            pointerPos = getCanvasCoords(e);
+            render();
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            if (settings.mode !== 'flashlight' || state !== 'COVERED') return;
+            pointerPos = null;
+            render();
+        });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (state !== 'COVERED') return;
+            const coords = getCanvasCoords(e);
+
+            if (settings.mode === 'qwer') {
+                const clickedSpot = currentSpots.find(s => isPointInSpot(coords.x, coords.y, s));
+                if (clickedSpot) revealWithSpot(clickedSpot);
+            } else if (settings.mode === 'flashlight') {
+                revealWithSpot({
+                    key: '',
+                    cx: coords.x,
+                    cy: coords.y,
+                    rx: settings.flashlightRadius,
+                    ry: settings.flashlightRadius
+                });
+            }
+        });
+
+        async function toggleFullscreen() {
+            try {
+                if (!isFullscreenActive()) {
+                    if (gameContainer.requestFullscreen) {
+                        await gameContainer.requestFullscreen();
+                    } else if (gameContainer.webkitRequestFullscreen) {
+                        gameContainer.webkitRequestFullscreen();
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        await document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
+                }
+            } catch (_) {}
+        }
+
+        function handleViewportChange() {
+            if (!isGameVisible() || !hasActiveVisualData()) return;
+            const prevW = canvas.width;
+            const prevH = canvas.height;
+            adjustCanvasSize();
+            if (settings.infiniteGrid) {
+                buildGridLayout();
+            }
+            const scaleX = canvas.width / Math.max(1, prevW);
+            const scaleY = canvas.height / Math.max(1, prevH);
+            currentSpots.forEach(s => {
+                s.cx *= scaleX;
+                s.cy *= scaleY;
+                rescaleSpotRadii(s, settings.spotAreaRatio);
+            });
+            if (activeSpot) {
+                activeSpot.cx *= scaleX;
+                activeSpot.cy *= scaleY;
+                if (settings.mode === 'flashlight') {
+                    activeSpot.rx = settings.flashlightRadius;
+                    activeSpot.ry = settings.flashlightRadius;
+                } else {
+                    rescaleSpotRadii(activeSpot, settings.spotAreaRatio);
+                }
+            }
+            updateFullscreenHintVisibility();
+            ensureAnimationLoop();
+            render();
+        }
+
+        window.addEventListener('resize', handleViewportChange);
+        document.addEventListener('fullscreenchange', handleViewportChange);
+        document.addEventListener('webkitfullscreenchange', handleViewportChange);
+
+        window.addEventListener('keydown', (e) => {
+            if (!isGameVisible() || !hasActiveVisualData()) return;
+
+            const pressedKey = e.key.toUpperCase();
+
+            if (pressedKey === 'F') {
+                e.preventDefault();
+                ensureAudioContext();
+                showFirstSlideFullscreenHint = false;
+                updateFullscreenHintVisibility();
+                toggleFullscreen();
+                return;
+            }
+
+            if (settings.mode === 'qwer' && state === 'COVERED') {
+                const spot = currentSpots.find(s => s.key === pressedKey);
+                if (spot) revealWithSpot(spot);
+            }
+        });
+
+        function startTimer() {
+            clearTimer();
+            state = 'WAITING';
+            updateFullscreenHintVisibility();
+            timeLeft = settings.changeTime;
+            timerElement.style.display = 'block';
+            timeLeftElement.textContent = timeLeft;
+
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                timeLeftElement.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearTimer();
+                    loadNextImage();
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
