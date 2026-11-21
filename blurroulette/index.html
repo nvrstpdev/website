@@ -32,7 +32,8 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         body::selection {
@@ -601,14 +602,14 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Syne', sans-serif;
-            font-size: clamp(32px, 5vw, 64px);
+            font-size: clamp(24px, 5vw, 64px);
             font-weight: 800;
             letter-spacing: 2px;
             color: #ffffff;
             text-shadow: 0 0 28px rgba(244, 114, 182, 0.8), 0 4px 16px rgba(0, 0, 0, 0.95);
             background: rgba(22, 10, 42, 0.85);
             backdrop-filter: blur(14px);
-            padding: 20px 40px;
+            padding: 16px 28px;
             border-radius: 22px;
             border: 1px solid rgba(244, 114, 182, 0.65);
             z-index: 9999;
@@ -616,6 +617,67 @@
             display: none;
             white-space: nowrap;
             box-shadow: 0 0 45px rgba(147, 51, 234, 0.55);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                justify-content: flex-start;
+                padding-top: 132px;
+                padding-bottom: 24px;
+            }
+
+            #top-left-site-btn {
+                top: 10px;
+                left: 10px;
+                padding: 6px 11px;
+                font-size: 12px;
+            }
+
+            #top-left-links {
+                top: 44px;
+                left: 10px;
+                gap: 6px;
+            }
+
+            .top-left-link-btn {
+                padding: 6px 11px;
+                font-size: 12px;
+            }
+
+            #menu-wrapper {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
+                max-width: 100%;
+                padding: 0 12px;
+            }
+
+            .side-panel,
+            #menu {
+                width: 100%;
+                max-width: 100%;
+                flex: none;
+                max-height: none;
+                overflow-y: visible;
+                padding: 15px 16px;
+            }
+
+            #grid-side-panel {
+                order: 2;
+            }
+
+            #menu {
+                order: 1;
+            }
+
+            #effects-side-panel {
+                order: 3;
+            }
+
+            .actions-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -658,7 +720,7 @@
         </aside>
 
         <div id="menu" class="glass-panel">
-            <h1 class="brand-title">Blur roulette v1.0</h1>
+            <h1 class="brand-title">Image Reveal Challenge</h1>
 
             <div class="control-group">
                 <div class="control-label">
