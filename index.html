@@ -159,12 +159,33 @@
         <!-- SEKCJA 1 -->
         <section class="flex w-full flex-col items-center">
           <!-- Informacje o platformach -->
-          <div class="mb-2 flex flex-col items-center gap-y-1">
-            <div class="badge-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5">
-              <svg class="h-3.5 w-3.5 text-purple-400" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.62L24 0v11.4h-13.051M0 12.75h9.75v9.45L0 20.85M10.949 12.75H24V24l-13.051-1.851z" /></svg>
-              <span class="text-[11px] font-semibold tracking-wider text-purple-200 uppercase">Available for Windows</span>
+          <div class="mb-3 flex flex-col items-center gap-2">
+            <span class="text-[11px] font-semibold tracking-widest text-purple-200/90 uppercase">Available on</span>
+            <div class="flex flex-wrap items-center justify-center gap-2.5">
+              <!-- Windows -->
+              <div class="badge-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5">
+                <svg class="h-3.5 w-3.5 shrink-0 text-purple-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.62L24 0v11.4h-13.051M0 12.75h9.75v9.45L0 20.85M10.949 12.75H24V24l-13.051-1.851z" />
+                </svg>
+                <span class="text-[11px] font-semibold tracking-wider text-purple-100 uppercase whitespace-nowrap">Windows</span>
+              </div>
+
+              <!-- Linux -->
+              <div class="badge-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5">
+                <svg class="h-3.5 w-3.5 shrink-0 text-pink-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.251-2.413 2.388-2.713 3.608-.321 1.302.226 2.503.758 3.314.18.274.342.494.455.636-.232.39-.544.918-.687 1.36-.232.717.07 1.564.864 1.883.627.252 1.38.062 1.946-.355.473-.349.874-.82 1.186-1.254.636.228 1.335.352 2.083.352.748 0 1.447-.124 2.083-.352.312.434.713.905 1.186 1.254.566.417 1.319.607 1.946.355.794-.319 1.096-1.166.864-1.883-.143-.442-.455-.97-.687-1.36.113-.142.275-.362.455-.636.532-.811 1.079-2.012.758-3.314-.3-1.22-1.828-2.357-2.713-3.608-.75-1.067-.974-1.928-1.05-3.02-.065-1.491 1.056-5.965-3.17-6.298-.165-.013-.325-.021-.48-.021zm-2.36 6.723c.357 0 .647.376.647.84 0 .464-.29.84-.647.84-.358 0-.648-.376-.648-.84 0-.464.29-.84.648-.84zm4.712 0c.358 0 .648.376.648.84 0 .464-.29.84-.648.84-.357 0-.647-.376-.647-.84 0-.464.29-.84.647-.84zm-2.356 2.13c.882 0 1.598.442 1.598.988 0 .546-.716.988-1.598.988-.883 0-1.599-.442-1.599-.988 0-.546.716-.988 1.599-.988z" />
+                </svg>
+                <span class="text-[11px] font-semibold tracking-wider text-purple-100 uppercase whitespace-nowrap">Linux</span>
+              </div>
+
+              <!-- Android -->
+              <div class="badge-pill inline-flex items-center gap-2 rounded-full px-4 py-1.5">
+                <svg class="h-3.5 w-3.5 shrink-0 text-purple-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1155-9.4396" />
+                </svg>
+                <span class="text-[11px] font-semibold tracking-wider text-purple-100 uppercase whitespace-nowrap">Android</span>
+              </div>
             </div>
-            <span class="text-xs font-medium text-purple-300/80">linux, android, mac, ios coming soon!</span>
           </div>
 
           <!-- Napis NeverStop -->
@@ -491,16 +512,17 @@
                     <!-- Oficjalna poprawna ikona Itch.io (Simple Icons) -->
                     <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M3.129 1.338c-1.047.622-3.109 2.991-3.129 3.612v1.029c0 1.304 1.219 2.45 2.57 2.45h1.161c.421 0 .783.332.783.753v.783c0 .542-.482.964-1.024.964H1.61c-.886 0-1.61.723-1.61 1.61v.602c0 1.295 1.18 2.379 2.499 2.379h2.09c.422 0 .753.331.753.753v1.175c0 .542-.422.964-.964.964h-1.054c-.886 0-1.61.723-1.61 1.61v1.174c0 1.392 1.217 2.53 2.62 2.53h1.747c.422 0 .753.331.753.753v1.205c0 1.391 1.247 2.53 2.651 2.53h1.325c.422 0 .753-.331.753-.753v-1.175c0-.421.332-.753.753-.753h5.452c.422 0 .753.332.753.753v1.175c0 .422.331.753.753.753h1.325c1.404 0 2.651-1.139 2.651-2.53v-1.205c0-.422.331-.753.753-.753h1.747c1.403 0 2.62-1.138 2.62-2.53v-1.174c0-.887-.724-1.61-1.61-1.61h-1.054c-.542 0-.964-.422-.964-.964v-1.175c0-.422.331-.753.753-.753h2.09c1.319 0 2.499-1.084 2.499-2.379v-.602c0-.887-.724-1.61-1.61-1.61h-1.356c-.542 0-1.024-.422-1.024-.964v-.783c0-.421.362-.753.783-.753h1.161c1.352 0 2.57-1.146 2.57-2.45v-1.029c-.02-.621-2.082-2.99-3.129-3.612C20.574.652 17.587 0 12 0S3.426.652 3.129 1.338zM8.5 11.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
-                    </svg>
+                      </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white transition group-hover:text-purple-200">Get on Itch.io</h3>
                   </div>
-                  <h3 class="text-lg font-bold text-white transition group-hover:text-purple-200">Get on Itch.io</h3>
+                  <span class="rounded-full border border-purple-500/30 bg-purple-600/40 px-3 py-1 text-xs font-bold text-purple-200">$25 once</span>
                 </div>
-                <span class="rounded-full border border-purple-500/30 bg-purple-600/40 px-3 py-1 text-xs font-bold text-purple-200">$25 once</span>
+                <div class="mb-2 text-xs font-semibold text-purple-300">Buy once & get lifetime updates</div>
+                <p class="text-sm leading-relaxed text-purple-200/90">Get the full version with lifetime access to all future updates. No recurring subscriptions.</p>
               </div>
-              <div class="mb-2 text-xs font-semibold text-purple-300">Buy once & get lifetime updates</div>
-              <p class="text-sm leading-relaxed text-purple-200/90">Get the full version with lifetime access to all future updates. No recurring subscriptions.</p>
-            </div>
-          </a>
+            </a>
+          </div>
         </div>
 
         <!-- Sekcja About the author -->
